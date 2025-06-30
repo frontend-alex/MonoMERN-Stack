@@ -1,0 +1,25 @@
+{
+  "name": "mern-stack-boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "shared",
+    "server",
+    "client"
+  ],
+"scripts": {
+  "dev:shared-server": "concurrently -k -n shared,server -p \"[{name}]\" --raw \"pnpm --filter shared run watch\" \"pnpm --filter server run dev\"",
+  "dev:all": "concurrently -k -n shared,server,client -p \"[{name}]\" --raw \"pnpm --filter shared run watch\" \"pnpm --filter server run dev\" \"pnpm --filter client run dev\""
+},
+
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.9.0",
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "nodemon": "^3.1.10"
+  }
+}
