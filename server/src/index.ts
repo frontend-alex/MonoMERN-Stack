@@ -1,15 +1,13 @@
-import express from 'express'
+import express from "express";
 
-import { User } from '@shared/types/user'; 
+import { logger } from "./utils/logger";
 
 const app = express();
 const port = 3000;
 
-app.get('/', (req, res) => {
-  const user: User = { id: '1', email: 'alice@example.com', name: 'john', age: 30 };
-  res.json(user);
-});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  logger.info(`Server running at http://localhost:${port}`);
 });

@@ -9,15 +9,14 @@
     "server",
     "client"
   ],
-"scripts": {
-  "dev:shared-server": "concurrently -k -n shared,server -p \"[{name}]\" --raw \"pnpm --filter shared run watch\" \"pnpm --filter server run dev\"",
-  "dev:all": "concurrently -k -n shared,server,client -p \"[{name}]\" --raw \"pnpm --filter shared run watch\" \"pnpm --filter server run dev\" \"pnpm --filter client run dev\""
-},
-
+  "scripts": {
+    "dev:shared-server": "concurrently -k -n shared,server -p \"[{name}]\" --raw \"pnpm --filter shared run watch\" \"pnpm --filter server run dev\"",
+    "dev:all": "concurrently -k -n shared,server,client -p \"[{name}]\" --raw \"pnpm --filter shared run watch\" \"pnpm --filter server run dev\" \"pnpm --filter client run dev\""
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.9.0",
+  "packageManager": "pnpm@10.12.4",
   "devDependencies": {
     "concurrently": "^9.2.0",
     "nodemon": "^3.1.10"
