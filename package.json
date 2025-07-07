@@ -1,8 +1,6 @@
 {
   "name": "mern-stack-boilerplate",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "private": true,
   "workspaces": [
     "shared",
@@ -10,15 +8,33 @@
     "client"
   ],
   "scripts": {
-    "dev:server": "concurrently -k -n shared,server -p \"[{name}]\" --raw \"pnpm --filter shared run watch\" \"pnpm --filter server run dev\"",
-    "dev:all": "concurrently -k -n shared,server,client -p \"[{name}]\" --raw \"pnpm --filter shared run watch\" \"pnpm --filter server run dev\" \"pnpm --filter client run dev\""
+    "dev": "pnpm run dev:all",
+    "dev:server": "concurrently -k -n SHARED,SERVER -p \"[{name}]\" --prefix-colors \"bgBlue.bold,bgGreen.bold\" \"pnpm --filter shared run watch\" \"pnpm --filter server run dev\"",
+    "dev:client": "pnpm --filter client run dev",
+    "dev:all": "concurrently -k -n SHARED,SERVER,CLIENT -p \"[{name}]\" --prefix-colors \"bgBlue.bold,bgGreen.bold,bgMagenta.bold\" \"pnpm --filter shared run watch\" \"pnpm --filter server run dev\" \"pnpm --filter client run dev\"",
+    
+    "build": "pnpm run build:shared && pnpm run build:server && pnpm run build:client",
+    "build:shared": "pnpm --filter shared run build",
+    "build:server": "pnpm --filter server run build",
+    "build:client": "pnpm --filter client run build",
+    
+    "start": "pnpm run start:server",
+    "start:server": "pnpm --filter server run start",
+    
+    "lint": "pnpm run lint:shared && pnpm run lint:server && pnpm run lint:client",
+    "test": "pnpm run test:shared && pnpm run test:server && pnpm run test:client",
+    
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up --build",
+    
+    "prepare": "husky install"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.12.4",
   "devDependencies": {
     "concurrently": "^9.2.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.0",
     "nodemon": "^3.1.10"
   }
 }
