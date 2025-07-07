@@ -1,0 +1,52 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Run Test Suite
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+        options: --health-cmd "mongosh --eval 'db.runCommand(\"ping\").ok'" --health-interval 10s --health-timeout 5s --health-retries 5
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      
+      - name: Install PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Install dependencies
+        run: pnpm install
+      
+      - name: Build shared package
+        run: pnpm --filter shared build
+      
+      - name: Run server unit tests
+        working-directory: ./server
+        run: pnpm test
+        env:
+          MONGO_URI: mongodb://localhost:27017/test_db
+          NODE_ENV: test
+      
+      - name: Run client unit tests
+        working-directory: ./client
+        run: pnpm test
+      
+      - name: Run integration tests
+        run: pnpm --filter server run test:integration

@@ -93,6 +93,15 @@ class AppServer {
   }
 
   /**
+   * Returns the Express application instance
+   * - Useful for testing or extending functionality
+   * @returns {Application} Express application instance
+   */
+  public getApp(): Application {
+    return this.app;
+  }
+
+  /**
    * Starts the application server
    * - Connects to database
    * - Initializes server
