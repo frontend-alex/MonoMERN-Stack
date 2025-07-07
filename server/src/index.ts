@@ -9,5 +9,5 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.listen(port, () => {
-  logger.info(`Server running at http://localhost:${port}`);
+  logger.info(`Server started on port ${port}`);
 });

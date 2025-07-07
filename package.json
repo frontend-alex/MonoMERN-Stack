@@ -10,7 +10,7 @@
     "client"
   ],
   "scripts": {
-    "dev:shared-server": "concurrently -k -n shared,server -p \"[{name}]\" --raw \"pnpm --filter shared run watch\" \"pnpm --filter server run dev\"",
+    "dev:server": "concurrently -k -n shared,server -p \"[{name}]\" --raw \"pnpm --filter shared run watch\" \"pnpm --filter server run dev\"",
     "dev:all": "concurrently -k -n shared,server,client -p \"[{name}]\" --raw \"pnpm --filter shared run watch\" \"pnpm --filter server run dev\" \"pnpm --filter client run dev\""
   },
   "keywords": [],

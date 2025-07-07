@@ -4,10 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "_build": "tsc",
-    "_start": "node build/index.js",
     "build": "tsc",
-    "watch": "tsc --watch",
+    "watch": "concurrently \"tsc --watch\"",
     "start": "node build/index.js",
     "dev": "concurrently \"pnpm run watch\" \"nodemon build/index.js\""
   },
@@ -20,8 +18,11 @@
     "dotenv": "^17.0.1",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
+    "logform": "^2.7.0",
     "mongoose": "^8.16.1",
-    "winston": "^3.17.0"
+    "uuid": "^11.1.0",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
