@@ -1,4 +1,3 @@
-
 import { NextFunction, Request, Response } from "express";
 import { ERROR_MESSAGES } from "../constants/errorMessages";
 import { logger } from "../utils/logger";
@@ -17,7 +16,13 @@ export class AppError extends Error {
   public userMessage?: string;
   public extra?: Record<string, any>;
 
-  constructor({ message, statusCode, errorCode, userMessage, extra }: AppErrorParams) {
+  constructor({
+    message,
+    statusCode,
+    errorCode,
+    userMessage,
+    extra,
+  }: AppErrorParams) {
     super(message);
     this.name = this.constructor.name;
     this.statusCode = statusCode;
@@ -56,7 +61,7 @@ export const createError = (
 
 export const errorHandler = (
   err: AppError | Error,
-  req: Request,
+  _req: Request,
   res: Response,
   _next: NextFunction
 ) => {
@@ -67,14 +72,8 @@ export const errorHandler = (
   const message = isAppError ? err.message : "Internal server error";
   const userMessage = isAppError ? err.userMessage : "Something went wrong";
 
-  // Colored logging with fallback stack
-  logger.error({
-    label: "\x1b[41m[ERROR]\x1b[0m",
-    name: err.name,
-    message,
-    path: req.path,
-    method: req.method,
-    stack: err.stack,
+  logger.error("Failed to handle request", {
+    error: err.name,
   });
 
   return res.status(statusCode).json({
