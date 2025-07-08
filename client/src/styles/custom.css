@@ -1,0 +1,7 @@
+.input {
+  @apply w-full border bg-accent dark:bg-input/30 border-neutral-100 dark:border-neutral-800;
+}
+
+.no-ring{
+  @apply focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none
+}
