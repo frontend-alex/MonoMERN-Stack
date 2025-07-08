@@ -70,14 +70,15 @@ class AppServer {
     });
 
     // Example: Uncomment and customize for your API routes
-    // this.app.use('/api/v1/users', userRouter);
-    // this.app.use('/api/v1/products', productRouter);
+    //! this.app.use('/api/v1/users', userRouter);
+    //! this.app.use('/api/v1/products', productRouter);
   }
 
   /**
    * Creates HTTP or HTTPS server based on configuration
    * @returns {http.Server|https.Server} Configured server instance
    */
+  
   private createServer() {
     // Create HTTPS server if enabled and certificates are provided
     if (env.HTTPS_ENABLED && env.SSL_CERT_PATH && env.SSL_KEY_PATH) {

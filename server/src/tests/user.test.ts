@@ -1,9 +1,11 @@
-import { User } from '../models/User';
 import mongoose from 'mongoose';
+
+import { env } from '../config/env';
+import { User } from '../models/User';
 
 describe('User Model', () => {
   beforeAll(async () => {
-    await mongoose.connect(process.env.MONGO_URI!);
+    await mongoose.connect(process.env.DB_LOCAL_URI!);
   });
 
   afterAll(async () => {

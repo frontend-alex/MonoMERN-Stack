@@ -8,11 +8,10 @@
     "watch": "concurrently \"tsc --watch\"",
     "start": "node build/index.js",
     "dev": "concurrently \"pnpm run watch\" \"nodemon build/index.js\"",
-    
-    "test": "jest --coverage",
-    "test:unit": "jest --coverage --testPathPattern=unit",
-    "test:integration": "jest --coverage --testPathPattern=integration",
-    "test:watch": "jest --watch"
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --forceExit",
+    "test:watch": "cross-env NODE_ENV=test jest --watch",
+    "test:coverage": "cross-env NODE_ENV=test jest --coverage",
+    "test:integration": "cross-env NODE_ENV=test jest --testPathPattern=integration"
   },
   "keywords": [],
   "author": "",
@@ -38,6 +37,7 @@
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
+    "@jest/globals": "^30.0.4",
     "@types/cors": "^2.8.19",
     "@types/csurf": "^1.11.5",
     "@types/express": "^5.0.3",
@@ -48,7 +48,10 @@
     "@types/node": "^24.0.7",
     "@types/supertest": "^6.0.3",
     "concurrently": "^9.2.0",
+    "cross-env": "^7.0.3",
+    "jest": "^30.0.4",
     "nodemon": "^3.1.10",
+    "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.16",
     "typescript": "^5.8.3",

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 import { env } from "./env";
 import { logger } from "../utils/logger";
 
@@ -12,8 +13,6 @@ const MONGO_OPTIONS = {
 
 export async function connectDB() {
   try {
-    const MONGO_URI = env.DB_LOCAL_URI;
-
     mongoose.connection.on("connected", () => {
       logger.info("MongoDB connected successfully");
     });
@@ -26,7 +25,7 @@ export async function connectDB() {
       logger.warn("MongoDB disconnected");
     });
 
-    await mongoose.connect(MONGO_URI, MONGO_OPTIONS);
+    await mongoose.connect(env.DB_LOCAL_URI, MONGO_OPTIONS);
   } catch (err) {
     logger.error("MongoDB connection failed:", { err });
     process.exit(1);
