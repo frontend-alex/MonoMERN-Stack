@@ -5,7 +5,8 @@ import { useForm } from "react-hook-form";
 import { useApiMutation } from "@/hooks/hook";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginForm } from "@/components/auth/login-form-02";
-import { loginSchema, type LoginSchemaType } from "@/schemas/auth/authSchema";
+import { loginSchema, type LoginSchemaType } from "@shared/schemas/auth/auth.schema";
+
 
 const Login = () => {
   const loginForm = useForm({
@@ -18,12 +19,14 @@ const Login = () => {
 
   const { mutate: login, isPending } = useApiMutation<LoginSchemaType>(
     "POST",
-    "/login",
+    "/auth/login",
     {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        console.log(data)
         toast.success("Login successfull");
       },
       onError: (err) => {
+        console.log(err)
         toast.error("Error!", {
           description: err.response?.data.message || "Login failed",
         });

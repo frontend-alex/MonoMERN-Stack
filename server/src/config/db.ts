@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 import { env } from "./env";
-import { logger } from "../utils/logger";
+import { logger } from "@/utils/logger";
 
 const MONGO_OPTIONS = {
   autoIndex: env.isProduction ? false : true,

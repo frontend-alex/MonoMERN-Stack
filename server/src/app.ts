@@ -1,14 +1,18 @@
+import "module-alias/register";
+
 import os from "os";
 import fs from "fs";
 import cluster from "cluster";
 
-import { env } from "./config/env";
+import { router } from "./routes";
+import { env } from "@/config/env";
 import { createServer } from "http";
-import { logger } from "./utils/logger";
-import express, { Application } from "express";
+import { logger } from "@/utils/logger";
+import express, { Application, ErrorRequestHandler } from "express";
+import { connectDB, disconnectDB } from "@/config/db";
 import { createServer as createHttpsServer } from "https";
-import { configureSecurity } from "./middlewares/security";
-import { connectDB, disconnectDB } from "./config/db";
+import { configureSecurity } from "@/middlewares/security";
+import { errorHandler } from "./middlewares/ErrorHandler";
 
 /**
  * AppServer - Core application server class that handles:
@@ -17,7 +21,7 @@ import { connectDB, disconnectDB } from "./config/db";
  * - Route handling
  * - Cluster management
  * - Graceful shutdown
- * 
+ *
  * Usage:
  * 1. Import and extend this class for custom functionality
  * 2. Add routes in configureRoutes()
@@ -30,7 +34,7 @@ class AppServer {
   constructor() {
     // Initialize Express application
     this.app = express();
-    
+
     // Configure middleware and routes
     this.configureMiddleware();
     this.configureRoutes();
@@ -45,12 +49,12 @@ class AppServer {
   private configureMiddleware() {
     // JSON body parser with configurable limit (default: 10kb)
     this.app.use(express.json({ limit: env.REQUEST_BODY_LIMIT }));
-    
+
     // URL-encoded body parser
     this.app.use(
       express.urlencoded({ extended: true, limit: env.REQUEST_BODY_LIMIT })
     );
-
+    
     // Apply security middleware (helmet, CORS, rate limiting, etc.)
     configureSecurity(this.app, env);
 
@@ -70,15 +74,16 @@ class AppServer {
     });
 
     // Example: Uncomment and customize for your API routes
-    //! this.app.use('/api/v1/users', userRouter);
-    //! this.app.use('/api/v1/products', productRouter);
+    this.app.use("/api/v1", router);
+
+    this.app.use(errorHandler as unknown as ErrorRequestHandler);
   }
 
   /**
    * Creates HTTP or HTTPS server based on configuration
    * @returns {http.Server|https.Server} Configured server instance
    */
-  
+
   private createServer() {
     // Create HTTPS server if enabled and certificates are provided
     if (env.HTTPS_ENABLED && env.SSL_CERT_PATH && env.SSL_KEY_PATH) {
@@ -88,7 +93,7 @@ class AppServer {
       };
       return createHttpsServer(options, this.app);
     }
-    
+
     // Fall back to HTTP server
     return createServer(this.app);
   }

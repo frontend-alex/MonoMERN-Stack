@@ -29,6 +29,12 @@ export const AUTH_ERRORS = {
     message: "New password cannot be the same as the current password.",
     userFriendlyMessage: "Please choose a different password.",
   },
+  EMAIL_ALREADY_TAKEN: {
+    errorCode: "AUTH_016",
+    statusCode: 400,
+    message: "Email is already in use.",
+    userFriendlyMessage: "This email is already taken. Please use another.",
+  },
   EMAIL_NOT_VERIFIED: {
     errorCode: "AUTH_006",
     statusCode: 403,
@@ -53,7 +59,52 @@ export const AUTH_ERRORS = {
     message: "Email is already verified.",
     userFriendlyMessage: "Your email is already verified.",
   },
+
+  // New auth errors for registration/login flows:
+  REGISTRATION_FAILED: {
+    errorCode: "AUTH_010",
+    statusCode: 500,
+    message: "Failed to register user.",
+    userFriendlyMessage: "We couldn’t complete your registration. Please try again.",
+  },
+  LOGIN_FAILED: {
+    errorCode: "AUTH_011",
+    statusCode: 401,
+    message: "Login failed due to invalid credentials or other issues.",
+    userFriendlyMessage: "Login failed. Please check your email and password and try again.",
+  },
+  USER_ALREADY_EXISTS: {
+    errorCode: "AUTH_012",
+    statusCode: 400,
+    message: "User with this email or username already exists.",
+    userFriendlyMessage: "An account with this email or username already exists.",
+  },
+  USERNAME_ALREADY_TAKEN: {
+    errorCode: "AUTH_013", // Changed from USER_002 to AUTH_013 to keep the namespace consistent
+    statusCode: 400,
+    message: "Username is already in use.",
+    userFriendlyMessage: "This username is already taken. Please choose another.",
+  },
+  PASSWORD_RESET_FAILED: {
+    errorCode: "AUTH_014",
+    statusCode: 500,
+    message: "Failed to reset password.",
+    userFriendlyMessage: "We couldn’t reset your password. Please try again later.",
+  },
+  ACCOUNT_LOCKED: {
+    errorCode: "AUTH_015",
+    statusCode: 403,
+    message: "Account is locked due to multiple failed login attempts.",
+    userFriendlyMessage: "Your account has been locked. Please try again later or contact support.",
+  },
+  EMAIL_NOT_REGISTERED: {
+    errorCode: "AUTH_017",
+    statusCode: 404,
+    message: "Email is not registered.",
+    userFriendlyMessage: "We couldn’t find an account with this email address.",
+  },
 };
+
 
 export const JWT_ERRORS = {
   INVALID_TOKEN: {
