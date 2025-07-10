@@ -6,6 +6,7 @@ import fs from "fs";
 import cluster from "cluster";
 import passport from "passport";
 import session from "express-session";
+import cookieParser from "cookie-parser";
 
 import { router } from "./routes";
 import { env } from "@/config/env";
@@ -63,6 +64,8 @@ class AppServer {
 
     // Configure proxy trust levels (important when behind load balancer)
     this.app.set("trust proxy", env.TRUST_PROXY);
+
+    this.app.use(cookieParser())
 
     this.app.use(
       session({

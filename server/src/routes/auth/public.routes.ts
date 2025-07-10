@@ -18,8 +18,9 @@ import passport from "passport";
 
 const router = Router();
 
-router.post("/register", validate(registrationSchema), register);
 router.post("/login", validate(loginSchema), login);
+router.post("/register", validate(registrationSchema), register);
+
 router.post("/send-otp", validate(emailSchema), sendOtp);
 router.put("/validate-otp", validate(otpSchema), validateOtp);
 

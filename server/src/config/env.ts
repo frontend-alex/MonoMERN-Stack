@@ -51,6 +51,12 @@ export const env = cleanEnv(process.env, {
   //google
   GOOGLE_CLIENT_ID: str(),
   GOOGLE_CLIENT_SECRET: str(),
+
+  //jwt
+  JWT_SECRET: str(),
+  JWT_REFRESH_SECRET: str(),
+  JWT_EXPIRATION: str({ default: "1h"}),
 });
 
 export type AppEnv = typeof env;
+

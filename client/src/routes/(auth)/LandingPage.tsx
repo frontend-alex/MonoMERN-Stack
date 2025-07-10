@@ -1,10 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ModeToggle } from "@/components/ui/toggle-theme";
+import { useAuth } from "@/contexts/AuthContext";
 import { ArrowRight, Github, Sparkles, Rocket, Layers } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const LandingPage = () => {
+  
+  const { user } = useAuth();
+  console.log(user)
+
   return (
     <div className="min-h-screen relative">
       <header className="relative z-10 p-5">

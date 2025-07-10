@@ -1,10 +1,34 @@
-import { registerService, sendOtpService, validateOtpService } from "@/services/auth/auth.service";
+import { env } from "@/config/env";
+import {
+  registerService,
+  sendOtpService,
+  validateOtpService,
+  loginService,
+} from "@/services/auth/auth.service";
 import { NextFunction, Request, Response } from "express";
 
-export const login = (req: Request, res: Response, next: NextFunction) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { email, password } = req.body;
 
   try {
+    const token = await loginService(email, password);
+
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/",
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Successfully logged in",
+    });
   } catch (err) {
     next(err);
   }
@@ -24,8 +48,8 @@ export const register = async (
       success: true,
       message: "User successfully created",
       data: {
-        email
-      }
+        email,
+      },
     });
   } catch (err) {
     next(err);
@@ -59,14 +83,12 @@ export const validateOtp = async (
   const { email, pin } = req.body;
 
   try {
-
     await validateOtpService(email, pin);
 
     res.status(200).json({
       success: true,
-      message: "Account successfully verfied"
-    })
-
+      message: "Account successfully verfied",
+    });
   } catch (err) {
     next(err);
   }

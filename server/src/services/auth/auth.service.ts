@@ -7,7 +7,27 @@ import {
   safeUpdate,
 } from "@/repositories/user/user.repository";
 import { getEmailTemplate, sendEmail } from "@/utils/email";
+import { jwtUtils } from "@/utils/jwt";
 import { generateOTP } from "@/utils/utils";
+
+
+export const loginService = async (email: string, password: string) => {
+  try{
+
+    const user = await findByEmail(email);
+    if(!user) throw createError("USER_NOT_FOUND");
+
+    const isMatch = await user.matchPassword(password);
+    if(!isMatch) throw createError("INVALID_CURRENT_PASSWORD");
+
+    if(!user.emailVerified) throw createError("EMAIL_NOT_VERIFIED");
+
+    return jwtUtils.generateToken(user.id, user.username)
+
+  } catch(err){
+    throw err
+  }
+}
 
 export const registerService = async (
   username: string,

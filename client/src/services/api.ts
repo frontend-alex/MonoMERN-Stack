@@ -11,27 +11,18 @@ const api: AxiosInstance = axios.create({
   withCredentials: true,
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
 
 api.interceptors.response.use(
   (response) => {
-  if (!response.data.success) {
+    if (!response.data.success) {
       return Promise.reject(response.data.message);
     }
     return response;
   },
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      redirect("/login");
+      redirect("/login"); 
     }
-
     return Promise.reject(error);
   }
 );

@@ -71,7 +71,8 @@ export const AUTH_ERRORS = {
     errorCode: "AUTH_011",
     statusCode: 401,
     message: "Login failed due to invalid credentials or other issues.",
-    userMessage: "Login failed. Please check your email and password and try again.",
+    userMessage:
+      "Login failed. Please check your email and password and try again.",
   },
   USER_ALREADY_EXISTS: {
     errorCode: "AUTH_012",
@@ -95,7 +96,8 @@ export const AUTH_ERRORS = {
     errorCode: "AUTH_015",
     statusCode: 403,
     message: "Account is locked due to multiple failed login attempts.",
-    userMessage: "Your account has been locked. Please try again later or contact support.",
+    userMessage:
+      "Your account has been locked. Please try again later or contact support.",
   },
   EMAIL_NOT_REGISTERED: {
     errorCode: "AUTH_017",
@@ -105,7 +107,6 @@ export const AUTH_ERRORS = {
   },
 };
 
-
 export const JWT_ERRORS = {
   INVALID_TOKEN: {
     errorCode: "JWT_001",
@@ -113,14 +114,20 @@ export const JWT_ERRORS = {
     message: "Invalid or expired token.",
     userMessage: "Your session has expired. Please log in again.",
   },
-  REFRESH_FAILED: {
+  INVALID_REFRESH_TOKEN: {
     errorCode: "JWT_002",
+    statusCode: 401,
+    message: "Invalid or expired refresh token.",
+    userMessage: "Your session has expired. Please log in again.",
+  },
+  REFRESH_FAILED: {
+    errorCode: "JWT_003",
     statusCode: 403,
     message: "Token refresh failed.",
     userMessage: "We couldn't refresh your session. Please log in again.",
   },
   INVALID_ENCRYPTED_TOKEN: {
-    errorCode: "JWT_003",
+    errorCode: "JWT_004",
     statusCode: 400,
     message: "Invalid encrypted token.",
     userMessage: "Authentication failed. Please try logging in again.",

@@ -1,6 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
+    "typeRoots": ["./src/express-user.d.ts", "node_modules/@types"],
     "target": "es2016",
     "module": "commonjs",
     "moduleResolution": "node",

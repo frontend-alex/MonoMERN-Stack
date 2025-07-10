@@ -22,14 +22,7 @@ export const findByEmail = async (email: string): Promise<IUser | null> => {
 
 export const findById = async (userId: string): Promise<IUser | null> => {
   try {
-    return await User.findById(userId).populate({
-      path: "workspaces",
-      populate: {
-        path: "members.user",
-        model: "User",
-        select: "username imageUrl email",
-      },
-    });
+    return await User.findById(userId).select("-password -refreshToken")
   } catch {
     throw createError("DATABASE_ERROR");
   }
@@ -40,7 +33,7 @@ export const findByUsername = async (
 ): Promise<IUser | null> => {
   try {
     return await User.findOne({ username }).select(
-      "-email -role -createdAt -updatedAt -_id"
+      "-email -createdAt -updatedAt -_id"
     );
   } catch {
     throw createError("DATABASE_ERROR");
