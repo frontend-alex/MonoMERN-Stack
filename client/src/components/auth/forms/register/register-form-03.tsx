@@ -104,7 +104,7 @@ export function RegisterForm({
                     className="w-full"
                   >
                     {isPending ? (
-                      <div className="flex-row-3">
+                      <div className="flex items-center gap-3">
                         <LoaderCircle className="animate-spin" />
                         <p>Cerating an account...</p>
                       </div>
