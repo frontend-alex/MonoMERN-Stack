@@ -5,8 +5,10 @@
     "outDir": "build",
     "rootDir": "src",
     "strict": true,
-    "module": "ESNext",
-    "target": "ES2022",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "module": "commonjs",
+    "target": "es2016",
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
