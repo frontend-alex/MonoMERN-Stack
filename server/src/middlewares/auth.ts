@@ -16,8 +16,6 @@ export const jwtMiddleware: RequestHandler = (
 ) => {
     const token = req.cookies?.access_token
 
-  console.log(token)
-
   if (!token) {
     return next(createError("INVALID_TOKEN"));
   }

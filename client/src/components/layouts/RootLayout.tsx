@@ -1,9 +1,40 @@
-import { Navigate, Outlet } from "react-router-dom"
+import Loading from "@/components/Loading";
+
+import { useAuth } from "@/contexts/AuthContext";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { AppSidebar } from "../sidebars/main-sidebar";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "../ui/sidebar";
+import { Separator } from "@radix-ui/react-separator";
 
 const RootLayout = () => {
-  return (
-     <>{false ? <Navigate to="/dashboard" /> : <Outlet />}</>
-  )
-}
+  const location = useLocation();
 
-export default RootLayout
+  const blockedRoutes = ["/login", "/verify-email", "/register"];
+
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) return <Loading />;
+
+  if (!isAuthenticated && blockedRoutes.includes(location.pathname)) {
+    const from = location.state?.from?.pathname || "/";
+    return <Navigate to={from} replace />;
+  }
+
+  return (
+    <div>
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset className="p-5">
+          <SidebarTrigger className="-ml-1" />
+          <Separator
+            orientation="vertical"
+            className="mr-2 data-[orientation=vertical]:h-4"
+          />
+          <Outlet />
+        </SidebarInset>
+      </SidebarProvider>
+    </div>
+  );
+};
+
+export default RootLayout;

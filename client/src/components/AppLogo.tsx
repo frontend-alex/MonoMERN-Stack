@@ -14,7 +14,7 @@ export const SmallAppLogo = () => {
 export const AppLogo = () => {
   return (
     <Link to="/">
-      <div className="flex-row-3">
+      <div className="flex items-center gap-3">
         <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-lg mx-auto bg-accent">
           <Layers className="h-4 w-4 text-primary" />
         </div>

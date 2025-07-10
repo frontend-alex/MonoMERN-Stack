@@ -1,27 +1,33 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { ModeToggle } from "@/components/ui/toggle-theme";
-import { useAuth } from "@/contexts/AuthContext";
-import { ArrowRight, Github, Sparkles, Rocket, Layers } from "lucide-react";
+import { memo } from "react";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight, Github, Sparkles, Rocket, Layers } from "lucide-react";
+import { UserDropdown } from "@/components/sidebars/user-nav";
 
 const LandingPage = () => {
-  
-  const { user } = useAuth();
-  console.log(user)
+  const { isAuthenticated } = useAuth();
 
   return (
     <div className="min-h-screen relative">
       <header className="relative z-10 p-5">
         <div className="flex justify-end items-center">
-          <div className="flex gap-3">
-            <Link to="/login">
-              <Button variant="ghost">Login</Button>
-            </Link>
-            <Link to="/register">
-              <Button>Register</Button>
-            </Link>
-          </div>
+          {isAuthenticated ? (
+            <div>
+              <UserDropdown />
+            </div>
+          ) : (
+            <div className="flex items-center gap-3">
+              <Link to="/login">
+                <Button variant="ghost">Login</Button>
+              </Link>
+              <Link to="/register">
+                <Button>Register</Button>
+              </Link>
+            </div>
+          )}
+          <div className="flex gap-3"></div>
         </div>
       </header>
 
@@ -90,4 +96,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default memo(LandingPage);

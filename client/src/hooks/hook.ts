@@ -1,4 +1,4 @@
-import api from "@/services/api";
+import api from "@/hooks/api";
 import { useQuery, useMutation, useQueryClient, type QueryKey } from "@tanstack/react-query";
 import type {
   ApiSuccessResponse,

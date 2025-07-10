@@ -93,3 +93,22 @@ export const validateOtp = async (
     next(err);
   }
 };
+
+
+export const logout = async (
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  res.clearCookie("access_token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/",
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Successfully logged out",
+  });
+};

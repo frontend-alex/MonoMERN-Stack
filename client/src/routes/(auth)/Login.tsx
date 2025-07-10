@@ -9,8 +9,15 @@ import {
   loginSchema,
   type LoginSchemaType,
 } from "@shared/schemas/auth/auth.schema";
+import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  const { refetch } = useAuth();
+
   const loginForm = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -23,20 +30,23 @@ const Login = () => {
     "POST",
     "/auth/login",
     {
-      onSuccess: (data) => {
-        console.log(data);
+      onSuccess: () => {
+        refetch();
+        navigate("/dashboard");
         toast.success("Login successfull");
       },
       onError: (err) => {
-        console.log(err);
         toast.error(err.response?.data.message || "Login failed");
       },
     }
   );
 
-  const handleLogin = async (data: LoginSchemaType) => {
-    login(data);
-  };
+  const handleLogin = useCallback(
+    async (data: LoginSchemaType) => {
+      login(data);
+    },
+    [login]
+  );
 
   return (
     <div>
