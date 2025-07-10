@@ -92,7 +92,7 @@ export function LoginForm({
                     className="w-full"
                   >
                     {isPending ? (
-                      <div className="flex-row-3">
+                      <div className="flex items-center gap-3">
                         <LoaderCircle className="animate-spin" />
                         <p>Logging in...</p>
                       </div>

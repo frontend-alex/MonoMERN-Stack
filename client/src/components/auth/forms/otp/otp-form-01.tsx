@@ -104,7 +104,7 @@ export function OtpForm({
                           className="text-primary underline underline-offset-4 hover:text-primary/80 disabled:text-stone-400 disabled:cursor-none cursor-pointer" 
                         >
                           {isOtpPending ? (
-                            <div className="flex-row-3">
+                            <div className="flex items-center gap-3">
                               <Loader
                                 size={10}
                                 className="text-stone-400 animate-spin"
