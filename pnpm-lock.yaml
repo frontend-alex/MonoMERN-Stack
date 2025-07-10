@@ -313,9 +313,31 @@ importers:
       axios:
         specifier: ^1.10.0
         version: 1.10.0
+      passport-facebook:
+        specifier: ^3.0.0
+        version: 3.0.0
+      passport-github2:
+        specifier: ^0.1.12
+        version: 0.1.12
+      passport-google-oauth20:
+        specifier: ^2.0.0
+        version: 2.0.0
       zod:
         specifier: ^3.25.76
         version: 3.25.76
+    devDependencies:
+      '@types/passport':
+        specifier: ^1.0.17
+        version: 1.0.17
+      '@types/passport-facebook':
+        specifier: ^3.0.3
+        version: 3.0.3
+      '@types/passport-github2':
+        specifier: ^1.2.9
+        version: 1.2.9
+      '@types/passport-google-oauth20':
+        specifier: ^2.0.16
+        version: 2.0.16
 
 packages:
 

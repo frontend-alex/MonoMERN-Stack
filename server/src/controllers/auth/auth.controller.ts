@@ -1,11 +1,51 @@
 import { env } from "@/config/env";
+import { strategies } from "@/constants/authProviders";
+import { NextFunction, Request, Response } from "express";
 import {
   registerService,
   sendOtpService,
   validateOtpService,
   loginService,
+  handleAuthCallbackService,
 } from "@/services/auth/auth.service";
-import { NextFunction, Request, Response } from "express";
+import { DecodedUser } from "@/middlewares/auth";
+
+export const providers = (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const publicProviders = strategies
+      .filter((s) => s.enabled)
+      .map(({ name, label }) => ({
+        name,
+        label,
+      }));
+
+    res.status(201).json({
+      success: true,
+      message: "Providers successfully fetched",
+      data: {
+        publicProviders,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const handleAuthCallback = (req: Request, res: Response, next: NextFunction) => {
+  try{
+    console.log(req.user)
+    const token = handleAuthCallbackService(req.user as DecodedUser)
+
+     const redirectUrl = Array.isArray(env.CORS_ORIGINS)
+      ? env.CORS_ORIGINS[0]
+      : env.CORS_ORIGINS;
+
+    res.status(201).redirect(`${redirectUrl}/auth/callback?token=${token}`)
+  } catch(err){
+    console.log(err)
+    next(err)
+  }
+}
 
 export const login = async (
   req: Request,
@@ -93,7 +133,6 @@ export const validateOtp = async (
     next(err);
   }
 };
-
 
 export const logout = async (
   _req: Request,

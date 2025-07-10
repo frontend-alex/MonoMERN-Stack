@@ -9,7 +9,7 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 
 import { router } from "./routes";
-import { env } from "@/config/env";
+import { env, getAppUrl } from "@/config/env";
 import { createServer } from "http";
 import { logger } from "@/utils/logger";
 import { errorHandler } from "@/middlewares/errors";
@@ -88,8 +88,9 @@ class AppServer {
   private configureRoutes() {
     // Basic health check endpoint
     this.app.get("/health", (req, res) => {
-      res.status(200).json({ status: "ok" });
-    });
+      res.status(200).json({ status: "ok", url:getAppUrl()  });
+    }); 
+
 
     // Example: Uncomment and customize for your API routes
     this.app.use("/api/v1", router);

@@ -4,6 +4,7 @@ import mongoose, { Schema, Document } from "mongoose";
 import { AccountProviders } from "@shared/types/enums";
 
 interface IUser extends Document {
+  id:string;
   username: string;
   email: string;
   password?: string | null;

@@ -1,16 +1,17 @@
 import AppLogo from "@/components/AppLogo";
 
 import { toast } from "sonner";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { useApiMutation } from "@/hooks/hook";
+import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useApiMutation, useApiQuery } from "@/hooks/hook";
 import { RegisterForm } from "@/components/auth/forms/register/register-form-02";
+import type { Providers } from "@/components/auth/forms/buttons/provider-buttons";
 import {
   registrationSchema,
   type RegistrationSchemaType,
 } from "@shared/schemas/auth/auth.schema";
-import { useNavigate } from "react-router-dom";
-import { useCallback } from "react";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -43,10 +44,17 @@ const Register = () => {
       );
     },
     onSuccess: (data) => {
-      navigate(`/verify-email?email=${data.data?.email}`);
-      sendOtp({ email: data.data?.email })
+      const email = data.data?.email;
+      navigate(`/verify-email?email=${email}`);
+      sendOtp({ email });
     },
   });
+
+  const { data: providersResponse, isLoading: isProvidersPending } =
+    useApiQuery<{ publicProviders: Providers[] }>(
+      ["providers"],
+      "/auth/providers"
+    );
 
   const handleRegister = useCallback(
     async (data: RegistrationSchemaType) => {
@@ -54,6 +62,8 @@ const Register = () => {
     },
     [register]
   );
+
+  const providers = providersResponse?.data?.publicProviders ?? [];
 
   return (
     <div>
@@ -64,6 +74,8 @@ const Register = () => {
         registerForm={registerForm}
         handleSubmit={handleRegister}
         isPending={isPending}
+        providers={providers}
+        isProvidersPending={isProvidersPending}
       />
     </div>
   );

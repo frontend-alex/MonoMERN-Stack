@@ -8,16 +8,12 @@ import { Separator } from "@radix-ui/react-separator";
 
 const RootLayout = () => {
   const location = useLocation();
-
-  const blockedRoutes = ["/login", "/verify-email", "/register"];
-
   const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) return <Loading />;
 
-  if (!isAuthenticated && blockedRoutes.includes(location.pathname)) {
-    const from = location.state?.from?.pathname || "/";
-    return <Navigate to={from} replace />;
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return (

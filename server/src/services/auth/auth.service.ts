@@ -1,4 +1,5 @@
 import { env } from "@/config/env";
+import { DecodedUser } from "@/middlewares/auth";
 import { createError } from "@/middlewares/errors";
 import { createUser } from "@/repositories/auth/auth.repository";
 import {
@@ -10,24 +11,26 @@ import { getEmailTemplate, sendEmail } from "@/utils/email";
 import { jwtUtils } from "@/utils/jwt";
 import { generateOTP } from "@/utils/utils";
 
-
 export const loginService = async (email: string, password: string) => {
-  try{
-
+  try {
     const user = await findByEmail(email);
-    if(!user) throw createError("USER_NOT_FOUND");
+    if (!user) throw createError("USER_NOT_FOUND");
 
     const isMatch = await user.matchPassword(password);
-    if(!isMatch) throw createError("INVALID_CURRENT_PASSWORD");
+    if (!isMatch) throw createError("INVALID_CURRENT_PASSWORD");
 
-    if(!user.emailVerified) throw createError("EMAIL_NOT_VERIFIED");
+    if (!user.emailVerified) throw createError("EMAIL_NOT_VERIFIED");
 
-    return jwtUtils.generateToken(user.id, user.username)
-
-  } catch(err){
-    throw err
+    return jwtUtils.generateToken(user.id, user.username);
+  } catch (err) {
+    throw err;
   }
-}
+};
+
+export const handleAuthCallbackService = async (user: DecodedUser) => {
+  if (!user) throw createError("USER_NOT_FOUND");
+  return jwtUtils.generateToken(user.id, user.username);
+};
 
 export const registerService = async (
   username: string,

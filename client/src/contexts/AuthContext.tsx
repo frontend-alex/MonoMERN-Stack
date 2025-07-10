@@ -26,8 +26,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     ["auth", "me"],
     "/auth/me",
     {
-      staleTime: 1000 * 60 * 10,
-      enabled: true,
+      staleTime: 1000 * 60 * 10, 
+      cacheTime: 1000 * 60 * 15, 
+      enabled: true, 
     }
   );
 
@@ -38,7 +39,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       onSuccess: (data) => {
         queryClient.setQueryData(["auth", "me"], null);
         navigate("/", { replace: true });
-        toast.success(data.message)
+        toast.success(data.message);
       },
     }
   );

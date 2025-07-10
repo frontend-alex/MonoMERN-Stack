@@ -1,6 +1,6 @@
 import passport from "passport";
 
-import { strategies } from "@/constants/authStrategies";
+import { strategies } from "@/constants/authProviders";
 import { AccountProviders } from "@shared/types/enums";
 import { CreateOAuthUser } from "@/repositories/auth/auth.repository";
 import { findByEmail, findById } from "@/repositories/user/user.repository";
@@ -34,7 +34,7 @@ passport.serializeUser((user: any, done) => {
 
 passport.deserializeUser(async (id: string, done) => {
   try {
-    const user = findById(id);
+    const user = await findById(id);
     done(null, user);
   } catch (error) {
     done(error);

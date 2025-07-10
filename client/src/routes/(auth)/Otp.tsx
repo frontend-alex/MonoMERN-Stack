@@ -68,7 +68,6 @@ const Otp = () => {
     const now = Date.now();
     localStorage.setItem(STORAGE_KEY, now.toString());
     setCooldown(COOLDOWN_DURATION);
-    console.log("OTP resent! (simulated)");
   }, [cooldown]);
 
   useEffect(() => {

@@ -17,7 +17,6 @@ export const getEmailTemplate = (templateName: string): string => {
   try {
     return fs.readFileSync(templatePath, "utf-8");
   } catch(err) {
-    console.log(err)
     throw createError("EMAIL_SENDING_FAILED");
   }
 };
@@ -31,7 +30,6 @@ export const sendEmail = async (to: string, subject: string, html: string): Prom
       html,
     });
   } catch (err) {
-    console.log(err)
     throw createError("EMAIL_SENDING_FAILED");
   }
 };

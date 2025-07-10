@@ -46,6 +46,7 @@ export const useApiQuery = <T, R = ApiSuccessResponse<T>>(
     staleTime: options?.staleTime ?? DEFAULT_STALE_TIME,
     enabled: options?.enabled,
     select: options?.select,
+    retry: 1,
     refetchInterval: options?.refetchInterval,
   });
 };

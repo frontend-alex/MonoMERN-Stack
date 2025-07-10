@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import { cleanEnv, str, num, bool, url, makeValidator } from "envalid";
+import { cleanEnv, str, num, bool, makeValidator } from "envalid";
 
 const corsValidator = makeValidator((input: string) => {
   const origins = input.split(",");
@@ -14,13 +14,13 @@ export const env = cleanEnv(process.env, {
     default: "development",
   }),
   PORT: num({ default: 3000 }),
-  HOST: str({ default: "0.0.0.0" }),
+  HOST: str({ default: "localhost" }),
 
   // Security
   TRUST_PROXY: num({ default: 0 }),
   RATE_LIMIT_WINDOW_MS: num({ default: 15 * 60 * 1000 }),
   RATE_LIMIT_MAX: num({ default: 100 }),
-  CORS_ORIGINS: corsValidator({ default: ["http://localhost:3000"] }),
+  CORS_ORIGINS: corsValidator({ default: ["http://localhost:5173"] }),
   CSRF_COOKIE_SECURE: bool({ default: false }),
 
   // HTTPS
@@ -57,6 +57,20 @@ export const env = cleanEnv(process.env, {
   JWT_REFRESH_SECRET: str(),
   JWT_EXPIRATION: str({ default: "1h"}),
 });
+
+export function getAppUrl() {
+  const protocol = env.HTTPS_ENABLED ? "https" : "http";
+  const host = env.HOST === "0.0.0.0" ? "localhost" : env.HOST;
+  const port = env.PORT;
+
+  const portSegment =
+    (protocol === "http" && port === 80) || (protocol === "https" && port === 443)
+      ? ""
+      : `:${port}`;
+
+  return `${protocol}://${host}${portSegment}`;
+}
+
 
 export type AppEnv = typeof env;
 
