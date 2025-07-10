@@ -1,15 +1,39 @@
 import { Router } from "express";
 
 import { validate } from "@/middlewares/validation";
-import { login, register } from "@/controllers/auth/auth.controller";
-import { loginSchema, registrationSchema }  from '@shared/schemas/auth/auth.schema'
+import {
+  login,
+  register,
+  sendOtp,
+  validateOtp,
+} from "@/controllers/auth/auth.controller";
+import {
+  emailSchema,
+  loginSchema,
+  otpSchema,
+  registrationSchema,
+} from "@shared/schemas/auth/auth.schema";
+import { strategies } from "@/constants/authStrategies";
+import passport from "passport";
 
 const router = Router();
 
+router.post("/register", validate(registrationSchema), register);
+router.post("/login", validate(loginSchema), login);
+router.post("/send-otp", validate(emailSchema), sendOtp);
+router.put("/validate-otp", validate(otpSchema), validateOtp);
 
-router.post('/register', validate(registrationSchema), register)
-router.post('/login', validate(loginSchema), login)
-// router.post('/send-otp',)
-// router.put('/validate-otp',)
+strategies.forEach(({ name }) => {
+  console.log(name)
+  router.get(`/${name}`, passport.authenticate(name, { scope: ["profile", "email"] }));
+
+  router.get(
+    `/${name}/callback`,
+    passport.authenticate(name, {
+      failureRedirect: "/login", 
+      successRedirect: "/dashboard", 
+    })
+  );
+});
 
 export { router as publicAuthRoutes };

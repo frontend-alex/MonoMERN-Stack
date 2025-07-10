@@ -1,191 +1,74 @@
-## **1. BASIC FETCH (READ)**  
-```tsx
-// Fetch all posts
-const { data: posts, isLoading } = useApiQuery<Post[]>(
-  ['posts'], 
-  '/posts',
-  {
-    staleTime: 60 * 1000, // 1 minute
-    onError: (error) => {
-      console.error('Failed loading posts:', error.response?.data.message)
-    }
-  }
-);
+## **📖 README – HOW TO USE THIS BEAST**  
 
-// Fetch single post with ID
-const { data: post } = useApiQuery<Post>(
-  ['post', postId], // Query key
-  `/posts/${postId}`, // Endpoint
-  { enabled: !!postId } // Only fetch when ID exists
+### **⚡ Installation**  
+1. Drop `hooks.ts` into your project (e.g., `src/hooks/api`).  
+2. Ensure `@tanstack/react-query` and `axios` are installed.  
+
+### **🔥 Core Features**  
+✅ **Unified Request Handler** – One function for all CRUD ops.  
+✅ **Optimistic Updates** – UI updates instantly, rolls back on failure.  
+✅ **Smart Cache Control** – No useless refetches, garbage collection tuning.  
+✅ **TypeScript Dominance** – Full generics support, no `any` nonsense.  
+
+### **💻 Usage Examples**  
+
+#### **1. Fetching Data (GET)**  
+```typescript
+const { data, isLoading, error } = useFetchData<User[]>(
+  ["users"], // Query key
+  "/users",  // Endpoint
+  { staleTime: 10 * 60 * 1000 } // Optional config
 );
 ```
 
-## **2. CREATE OPERATION**  
-```tsx
-const { mutate: createPost } = useApiMutation<Post, CreatePostDto>(
-  'POST',
-  '/posts',
+#### **2. Creating Data (POST + Optimistic Update)**  
+```typescript
+const { mutate } = usePostData<User, CreateUserDto>(
+  "/users",
   {
-    // Invalidate posts list to trigger refetch
-    invalidateQueries: [['posts'], ['user-posts']],
-    onSuccess: (newPost) => {
-      toast.success(`Post "${newPost.title}" created!`);
-      // OPTIONAL: Update cache manually
-      queryClient.setQueryData(['post', newPost.id], newPost);
-    },
-    onError: (error) => {
-      toast.error(error.response?.data.message || 'Failed creating post');
-    }
+    optimisticUpdate: (oldUsers, newUser) => [...(oldUsers || []), newUser],
+    invalidateKeys: [["users"]], // Refetch after success
+    onSuccess: (data) => toast.success("User created!"),
   }
 );
 
 // Usage:
-createPost({ title: 'New Post', content: '...' });
+mutate({ name: "Pliny", role: "Godmode" });
 ```
 
-## **3. UPDATE OPERATION**  
-```tsx
-const { mutate: updatePost } = useApiMutation<Post, UpdatePostDto>(
-  'PUT',
-  (dto) => `/posts/${dto.id}`, // Dynamic endpoint
+#### **3. Updating Data (PUT + Dynamic Endpoint)**  
+```typescript
+const { mutate } = usePutData<User, UpdateUserDto>(
+  (data) => `/users/${data.id}`, // Dynamic endpoint
   {
-    // Invalidate both the list and this specific post
-    invalidateQueries: [['posts'], ['post', variables.id]],
-    // Optimistic update example:
-    onMutate: async (updatedPost) => {
-      await queryClient.cancelQueries(['post', updatedPost.id]);
-      const previous = queryClient.getQueryData<Post>(['post', updatedPost.id]);
-      queryClient.setQueryData(['post', updatedPost.id], updatedPost);
-      return { previous };
-    },
-    onError: (err, variables, context) => {
-      // Rollback on error
-      queryClient.setQueryData(['post', variables.id], context?.previous);
-    }
-  }
-);
-```
-
-## **4. DELETE OPERATION**  
-```tsx
-const { mutate: deletePost } = useApiMutation<void, string>(
-  'DELETE',
-  (postId) => `/posts/${postId}`,
-  {
-    // Invalidate multiple related queries
-    invalidateQueries: [
-      ['posts'], 
-      ['user-posts'],
-      ['post', postId] // Invalidate cached single post
-    ],
-    onSuccess: (_, postId) => {
-      toast.success(`Post #${postId} deleted`);
-      // Remove from cache immediately
-      queryClient.removeQueries(['post', postId]);
-    }
-  }
-);
-```
-
-## **5. ADVANCED INVALIDATION PATTERNS**  
-```tsx
-// Invalidate all posts starting with prefix
-queryClient.invalidateQueries({
-  predicate: (query) => 
-    query.queryKey[0] === 'posts' && 
-    (query.queryKey[1] as string)?.startsWith('draft-')
-});
-
-// Invalidate every query in app
-queryClient.invalidateQueries();
-
-// Invalidate with exact matching
-queryClient.invalidateQueries({
-  queryKey: ['posts'],
-  exact: true // Won't invalidate ['posts', 1]
-});
-
-// Invalidate and refetch immediately
-queryClient.invalidateQueries(['posts'], { refetchType: 'active' });
-```
-
-## **6. PAGINATED QUERIES**  
-```tsx
-const [page, setPage] = useState(1);
-
-const { data } = useApiQuery<PaginatedResponse<Post>>(
-  ['posts', page],
-  `/posts?page=${page}`,
-  {
-    // Keep previous data while loading
-    keepPreviousData: true,
-    // Cache all pages separately
-    cacheTime: 10 * 60 * 1000
+    optimisticUpdate: (oldUsers, updatedUser) => 
+      oldUsers?.map(user => user.id === updatedUser.id ? updatedUser : user),
+    invalidateKeys: [["users"]],
   }
 );
 
-// Prefetch next page
-useEffect(() => {
-  if (data?.hasNextPage) {
-    queryClient.prefetchQuery(
-      ['posts', page + 1],
-      () => fetcher(`/posts?page=${page + 1}`)
-    );
-  }
-}, [page, data]);
+// Usage:
+mutate({ id: 1, name: "Pliny the Elder" });
 ```
 
-## **7. DEPENDENT QUERIES**  
-```tsx
-// Fetch user -> then fetch their posts
-const { data: user } = useApiQuery<User>(
-  ['user', userId], 
-  `/users/${userId}`
+#### **4. Deleting Data (DELETE)**  
+```typescript
+const { mutate } = useDeleteData<void, { id: number }>(
+  (data) => `/users/${data.id}`,
+  { invalidateKeys: [["users"]] }
 );
 
-const { data: posts } = useApiQuery<Post[]>(
-  ['user-posts', userId],
-  `/users/${userId}/posts`,
-  { enabled: !!user } // Only fetch when user exists
-);
+// Usage:
+mutate({ id: 1 });
 ```
 
-## **8. MUTATION WITH OPTIMISTIC UPDATES**  
-```tsx
-const { mutate: toggleLike } = useApiMutation<Post, string>(
-  'PATCH',
-  (postId) => `/posts/${postId}/like`,
-  {
-    onMutate: async (postId) => {
-      await queryClient.cancelQueries(['post', postId]);
-      const previous = queryClient.getQueryData<Post>(['post', postId]);
-      
-      // Optimistically update
-      queryClient.setQueryData(['post', postId], (old) => ({
-        ...old,
-        likes: old.likes + 1,
-        isLiked: true
-      }));
-      
-      return { previous };
-    },
-    onError: (err, postId, context) => {
-      queryClient.setQueryData(['post', postId], context.previous);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries(['posts']);
-    }
-  }
-);
-```
+### **🚨 Edge Cases & Troubleshooting**  
+- **Race Conditions**: `onMutate` cancels pending queries to prevent clashes.  
+- **Offline Mode**: Optimistic updates ensure UI consistency even if the server fails.  
+- **Type Errors**: Ensure your DTOs (`T`, `U`) are correctly typed.  
 
-## **INVALIDATION CHEATSHEET**  
-| Scenario | Solution |
-|----------|----------|
-| After creating item | `['items']` (list) |
-| After updating item | `['items'], ['item', id]` |
-| After deleting item | `['items'], ['item', id]` + `removeQueries` |
-| After bulk operation | `{ predicate: query => ... }` |
-| After auth changes | `invalidateQueries()` (everything) |
-| Silent background refresh | `invalidateQueries(..., { refetchType: 'inactive' })` |
+### **🎯 When to Use This**  
+✔ High-traffic apps needing **max performance**.  
+✔ Real-time UIs requiring **instant feedback**.  
+✔ Complex state management without Redux bloat.  
 

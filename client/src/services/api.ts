@@ -21,7 +21,7 @@ api.interceptors.request.use((config) => {
 
 api.interceptors.response.use(
   (response) => {
-    if (!response.data.success) {
+  if (!response.data.success) {
       return Promise.reject(response.data.message);
     }
     return response;

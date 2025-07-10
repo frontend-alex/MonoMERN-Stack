@@ -1,5 +1,5 @@
 import { IUser, User } from "@/models/User";
-import { createError } from "@/middlewares/ErrorHandler";
+import { createError } from "@/middlewares/errors";
 import { AccountProviders } from "@shared/types/enums";
 import { safeUpdate } from "@/repositories/user/user.repository";
 
@@ -23,18 +23,18 @@ export const createUser = async (
   }
 };
 
-export const createGoogleUser = async (
+export const CreateOAuthUser = async (
   username: string,
   email: string,
-  imageUrl: string
+  provider: keyof typeof AccountProviders = AccountProviders.Credentials,
 ): Promise<IUser> => {
   try {
     const user = new User({
       email,
       username,
-      imageUrl,
+      provider,
       emailVerified: true,
-      provider: AccountProviders.Google,
+      hasPassword: false,
     });
 
     await user.save();

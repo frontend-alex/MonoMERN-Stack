@@ -14,3 +14,19 @@ export const registrationSchema = z.object({
 });
 
 export type RegistrationSchemaType = z.infer<typeof registrationSchema>;
+
+
+export const otpSchema = z.object({
+  pin: z.string().min(6, {
+     message: "Your one-time password must be 6 characters."
+  }),
+  email: z.string().email("Invalid email address"),
+})
+
+export type OtpSchemaType = z.infer<typeof otpSchema>
+
+export const emailSchema = z.object({
+  email: z.string().email("Invalid email address"),
+})
+
+export type EmailSchemaType = z.infer<typeof emailSchema>

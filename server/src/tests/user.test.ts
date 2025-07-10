@@ -22,6 +22,6 @@ describe('User Model', () => {
 
     expect(savedUser._id).toBeDefined();
     expect(savedUser.email).toBe(userData.email);
-    expect(savedUser.password).not.toBe(userData.password); // Should be hashed
+    expect(savedUser.password).not.toBe(userData.password);
   });
 });

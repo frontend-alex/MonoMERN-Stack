@@ -1,5 +1,5 @@
 import { IUser, User } from "@/models/User";
-import { createError } from "@/middlewares/ErrorHandler";
+import { createError } from "@/middlewares/errors";
 
 export const safeUpdate = async (
   query: Record<string, any>,
@@ -14,9 +14,7 @@ export const safeUpdate = async (
 
 export const findByEmail = async (email: string): Promise<IUser | null> => {
   try {
-    const c = await User.findOne({ email });
-    console.log(c);
-    return c;
+    return await User.findOne({ email });
   } catch {
     throw createError("DATABASE_ERROR");
   }
@@ -41,11 +39,9 @@ export const findByUsername = async (
   username: string
 ): Promise<IUser | null> => {
   try {
-    const c = await User.findOne({ username }).select(
+    return await User.findOne({ username }).select(
       "-email -role -createdAt -updatedAt -_id"
     );
-    console.log(c);
-    return c;
   } catch {
     throw createError("DATABASE_ERROR");
   }

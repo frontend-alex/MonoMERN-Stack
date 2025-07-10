@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { useApiMutation } from "@/hooks/hook";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginForm } from "@/components/auth/login-form-02";
+import { LoginForm } from "@/components/auth/forms/login/login-form-02";
 import { loginSchema, type LoginSchemaType } from "@shared/schemas/auth/auth.schema";
 
 

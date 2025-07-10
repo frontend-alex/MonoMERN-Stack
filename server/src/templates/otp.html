@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" style="margin: 0; padding: 0">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Your OTP Code</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        background-color: #f4f4f7;
+        color: #333;
+      }
+      .container {
+        max-width: 480px;
+        margin: 40px auto;
+        padding: 24px;
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+      .logo {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .otp-box {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #111827;
+        color: #ffffff;
+        font-size: 28px;
+        font-weight: bold;
+        letter-spacing: 6px;
+        border-radius: 6px;
+        margin: 24px 0;
+      }
+      .footer {
+        text-align: center;
+        font-size: 12px;
+        color: #999;
+        margin-top: 32px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <h2>YourApp</h2>
+      </div>
+      <h3>Hello,</h3>
+      <p>Use the 6-digit code below to complete your email verification:</p>
+      <div class="otp-box">{{OTP_CODE}}</div>
+      <p>
+        This code is valid for 10 minutes. If you didn’t request this, you can
+        ignore this email.
+      </p>
+      <p>— The YourApp Team</p>
+      <div class="footer">&copy; {{YEAR}} MonoRepo. All rights reserved.</div>
+    </div>
+  </body>
+</html>

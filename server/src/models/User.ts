@@ -1,9 +1,9 @@
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 import mongoose, { Schema, Document } from "mongoose";
 import { AccountProviders } from "@shared/types/enums";
 
-export interface IUser extends Document {
+interface IUser extends Document {
   username: string;
   email: string;
   password?: string | null;
@@ -29,6 +29,8 @@ const userSchema = new Schema(
       unique: true,
       minlength: 6,
       maxlength: 20,
+      trim: true,
+      lowercase: true,
     },
     email: {
       type: String,
@@ -73,8 +75,7 @@ userSchema.pre<IUser>("save", async function (next) {
 userSchema.methods.matchPassword = async function (
   enteredPassword: string
 ): Promise<boolean> {
-  if (!this.password) return false;
-  return await bcrypt.compare(enteredPassword, this.password);
+  return this.password ? bcrypt.compare(enteredPassword, this.password) : false;
 };
 
 userSchema.methods.isResetTokenExpired = function (): boolean {
@@ -88,3 +89,4 @@ userSchema.methods.isOtpExpired = function (): boolean {
 const User = mongoose.model<IUser>("User", userSchema);
 
 export { User };
+export type { IUser };

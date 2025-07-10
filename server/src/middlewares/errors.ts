@@ -54,7 +54,7 @@ export const createError = (
     message: base.message,
     statusCode: base.statusCode || 500,
     errorCode: base.errorCode || "UNKNOWN",
-    userMessage: overrides?.userMessage,
+     userMessage: overrides?.userMessage ?? base.userMessage,
     extra: overrides?.extra,
   });
 };
@@ -82,5 +82,6 @@ export const errorHandler = (
     errorCode,
     statusCode,
     userMessage,
+    ...(isAppError && err.extra ? err.extra : {}),
   });
 };

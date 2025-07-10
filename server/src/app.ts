@@ -1,18 +1,21 @@
 import "module-alias/register";
+import '@/config/passport'
 
 import os from "os";
 import fs from "fs";
 import cluster from "cluster";
+import passport from "passport";
+import session from "express-session";
 
 import { router } from "./routes";
 import { env } from "@/config/env";
 import { createServer } from "http";
 import { logger } from "@/utils/logger";
-import express, { Application, ErrorRequestHandler } from "express";
+import { errorHandler } from "@/middlewares/errors";
 import { connectDB, disconnectDB } from "@/config/db";
 import { createServer as createHttpsServer } from "https";
 import { configureSecurity } from "@/middlewares/security";
-import { errorHandler } from "./middlewares/ErrorHandler";
+import express, { Application, ErrorRequestHandler } from "express";
 
 /**
  * AppServer - Core application server class that handles:
@@ -54,12 +57,24 @@ class AppServer {
     this.app.use(
       express.urlencoded({ extended: true, limit: env.REQUEST_BODY_LIMIT })
     );
-    
+
     // Apply security middleware (helmet, CORS, rate limiting, etc.)
     configureSecurity(this.app, env);
 
     // Configure proxy trust levels (important when behind load balancer)
     this.app.set("trust proxy", env.TRUST_PROXY);
+
+    this.app.use(
+      session({
+        secret: env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+      })
+    );
+
+    // Initialize passport
+    this.app.use(passport.initialize());
+    this.app.use(passport.session());
   }
 
   /**

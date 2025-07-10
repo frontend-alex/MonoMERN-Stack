@@ -3,7 +3,7 @@ import AuthLayout from "./components/layouts/AuthLayout";
 
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import { LandingPage, Login, Register } from "./routes/(auth)";
+import { LandingPage, Login, Otp, Register } from "./routes/(auth)";
 
 const App = () => {
   return (
@@ -31,6 +31,14 @@ const App = () => {
             element={
               <TitleWrapper title="Register Page">
                 <Register />
+              </TitleWrapper>
+            }
+          />
+          <Route
+            path="/verify-email"
+            element={
+              <TitleWrapper title="Verify Email">
+                <Otp />
               </TitleWrapper>
             }
           />

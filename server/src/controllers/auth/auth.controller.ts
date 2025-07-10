@@ -1,4 +1,4 @@
-import { registerService } from "@/services/auth/auth.service";
+import { registerService, sendOtpService, validateOtpService } from "@/services/auth/auth.service";
 import { NextFunction, Request, Response } from "express";
 
 export const login = (req: Request, res: Response, next: NextFunction) => {
@@ -17,36 +17,56 @@ export const register = async (
 ) => {
   const { email, password, username } = req.body;
 
-  console.log(req.body)
-
   try {
     await registerService(username, email, password);
 
-    res.status(200).json({
-      status: true,
+    res.status(201).json({
+      success: true,
       message: "User successfully created",
-      data: {},
+      data: {
+        email
+      }
     });
   } catch (err) {
     next(err);
   }
 };
 
-export const sendOtp = (req: Request, res: Response, next: NextFunction) => {
+export const sendOtp = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { email } = req.body;
+
   try {
+    await sendOtpService(email);
+
+    res.status(201).json({
+      success: true,
+      message: `Otp was successfully sent to ${email}`,
+    });
   } catch (err) {
     next(err);
   }
 };
 
-export const validateOtp = (
+export const validateOtp = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { otp } = req.body;
+  const { email, pin } = req.body;
 
   try {
+
+    await validateOtpService(email, pin);
+
+    res.status(200).json({
+      success: true,
+      message: "Account successfully verfied"
+    })
+
   } catch (err) {
     next(err);
   }

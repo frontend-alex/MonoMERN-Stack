@@ -117,7 +117,7 @@ export function RegisterForm({
             </div>
             <div className="text-center text-sm">
               Already have an account?{" "}
-              <Link to="/register" className="underline underline-offset-4">
+              <Link to="/login" className="underline underline-offset-4">
                 Log in
               </Link>
             </div>
