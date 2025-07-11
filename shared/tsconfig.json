@@ -10,6 +10,8 @@
     "module": "commonjs",
     "target": "es2016",
     "moduleResolution": "node",
+    "verbatimModuleSyntax": false,
+    "erasableSyntaxOnly": false,
     "baseUrl": ".",
     "paths": {
       "@shared/*": ["src/*"]

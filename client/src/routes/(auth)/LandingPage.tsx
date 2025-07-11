@@ -1,10 +1,10 @@
-import { lazy, memo, Suspense } from "react";
 import { Link } from "react-router-dom";
+import { lazy, memo, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { UserDropdownSkeleton } from "@/components/dropdowns/user-dropdown";
-import { ArrowRight, Github, Sparkles, Rocket, Layers } from "lucide-react";
+import { ArrowRight, Sparkles, Rocket, Layers } from "lucide-react";
 
 const LazyUserDropdown = lazy(() => import("@/components/dropdowns/user-dropdown"));
 

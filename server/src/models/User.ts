@@ -42,7 +42,7 @@ const userSchema = new Schema(
     },
     provider: {
       type: String,
-      enum: AccountProviders,
+      enum: Object.values(AccountProviders),
       default: AccountProviders.Credentials,
     },
     password: {

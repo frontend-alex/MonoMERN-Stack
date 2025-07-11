@@ -5,9 +5,8 @@ import rateLimit from 'express-rate-limit';
 import mongoSanitize from 'mongo-sanitize';
 
 import { Application } from 'express';
-import { AppEnv } from '@/config/env';
 
-export const configureSecurity = (app: Application, env: AppEnv) => {
+export const configureSecurity = (app: Application, env: typeof import('@/config/env').env) => {
   app.use(helmet({
     contentSecurityPolicy: {
       directives: {
