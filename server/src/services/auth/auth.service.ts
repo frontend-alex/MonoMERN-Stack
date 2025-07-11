@@ -117,10 +117,11 @@ const updatePassword = async (
 
     await UserRepo.safeUpdate({ id: user.id }, { password: hashedPassword });
   } catch (err) {
-    console.log(err)
     throw err;
   }
 };
+
+
 
 export const AuthService = {
   login,

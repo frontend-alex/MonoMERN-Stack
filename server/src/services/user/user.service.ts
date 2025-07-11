@@ -16,7 +16,20 @@ const updateUser = async (
   await UserRepo.updateUser({ _id: userId }, updateData);
 };
 
+const deleteUser = async (userId: string) => {
+  try {
+    if (!userId) throw createError("USER_NOT_FOUND");
+
+    await UserRepo.deleteUser(userId);
+  } catch (err) {
+    throw err;
+  }
+};
+
 
 export const UserService = {
-  updateUser
-}
+  updateUser,
+  deleteUser
+}  
+
+

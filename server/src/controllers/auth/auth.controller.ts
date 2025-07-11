@@ -3,6 +3,7 @@ import { DecodedUser } from "@/middlewares/auth";
 import { strategies } from "@/constants/authProviders";
 import { NextFunction, Request, Response } from "express";
 import { AuthService } from "@/services/auth/auth.service";
+import { UserService } from "@/services/user/user.service";
 
 const providers = (_req: Request, res: Response, next: NextFunction) => {
   try {

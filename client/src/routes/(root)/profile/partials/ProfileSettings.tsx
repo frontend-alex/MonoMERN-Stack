@@ -1,7 +1,16 @@
+import DeleteDialog from "@/components/dialogs/DeleteDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useApiMutation } from "@/hooks/hook";
+import { toast } from "sonner";
 
 const ProfileSettings = () => {
+  const { mutateAsync: deleteUser } = useApiMutation("DELETE", "/auth/delete", {
+    invalidateQueries: [["auth", "me"]],
+    onSuccess: (data) => toast.success(data.message),
+    onError: (err) => toast.error(err.response?.data.message),
+  });
+
   return (
     <Card className="bg-red-600/10 border-none shadow-none">
       <CardContent>
@@ -11,9 +20,14 @@ const ProfileSettings = () => {
             Deleting your account is permanent and will remove all your data.
             This action cannot be undone.
           </p>
-          <Button variant="destructive" className="mt-5">
-            Delete Account
-          </Button>
+          <DeleteDialog
+            description="You're about to permanently delete your account. This action cannot be undone."
+            onConfirm={() => deleteUser(null)}
+          >
+            <Button variant="destructive" className="mt-5">
+              Delete Account
+            </Button>
+          </DeleteDialog>
         </div>
       </CardContent>
     </Card>

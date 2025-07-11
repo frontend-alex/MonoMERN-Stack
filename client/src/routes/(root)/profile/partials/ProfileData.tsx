@@ -39,7 +39,7 @@ const ProfileData = () => {
       onError: (data) => toast.error(data.message),
     }
   );
-
+  
   const usernameSchemaObject = z.object({ username: usernameSchema });
   const emailSchemaObject = z.object({ email: emailSchema });
 

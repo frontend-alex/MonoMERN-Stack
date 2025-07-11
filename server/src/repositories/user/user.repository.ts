@@ -64,10 +64,20 @@ const findByUsername = async (username: string): Promise<IUser | null> => {
   }
 };
 
+const deleteUser = async (userId: string): Promise<void> => {
+  try {
+    const result = await User.findByIdAndDelete(userId);
+    if (!result) throw createError("USER_NOT_FOUND");
+  } catch {
+    throw createError("DATABASE_ERROR");
+  }
+};
+
 export const UserRepo = {
   safeUpdate,
   updateUser,
   findByEmail,
   findById,
   findByUsername,
+  deleteUser
 };

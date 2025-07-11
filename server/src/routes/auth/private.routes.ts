@@ -15,5 +15,7 @@ router.post('/logout', AuthController.logout)
 
 router.put('/update', validate(updateUserSchema), UserController.updateUser)
 router.put('/update-password', validate(updatePasswordSchema), AuthController.updatePassword)
+
+router.delete("/delete", UserController.deleteUser)
     
 export { router as protectedAuthRoutes };
