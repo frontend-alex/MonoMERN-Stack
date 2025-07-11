@@ -6,7 +6,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { UserDropdownSkeleton } from "@/components/dropdowns/user-dropdown";
 import { ArrowRight, Sparkles, Rocket, Layers } from "lucide-react";
 
-const LazyUserDropdown = lazy(() => import("@/components/dropdowns/user-dropdown"));
+const LazyUserDropdown = lazy(
+  () => import("@/components/dropdowns/user-dropdown")
+);
 
 const LandingPage = () => {
   const { isAuthenticated } = useAuth();
@@ -16,11 +18,11 @@ const LandingPage = () => {
       <nav className="relative z-10 p-5">
         <div className="flex justify-end items-center">
           {isAuthenticated ? (
-            <Suspense fallback={<UserDropdownSkeleton />}>
-              <div>
+            <div>
+              <Suspense fallback={<UserDropdownSkeleton />}>
                 <LazyUserDropdown />
-              </div>
-            </Suspense>
+              </Suspense>
+            </div>
           ) : (
             <div className="flex items-center gap-3">
               <Link to="/login">
@@ -86,7 +88,11 @@ const LandingPage = () => {
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button variant="outline" size="lg">
-              <img loading="lazy" src="/images/providers/github.webp" className="size-4"/>
+              <img
+                loading="lazy"
+                src="/images/providers/github.webp"
+                className="size-4"
+              />
               View on GitHub
             </Button>
           </div>

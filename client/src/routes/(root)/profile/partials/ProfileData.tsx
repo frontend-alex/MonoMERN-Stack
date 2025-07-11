@@ -39,7 +39,7 @@ const ProfileData = () => {
       onError: (data) => toast.error(data.message),
     }
   );
-  
+
   const usernameSchemaObject = z.object({ username: usernameSchema });
   const emailSchemaObject = z.object({ email: emailSchema });
 
@@ -119,7 +119,9 @@ const ProfileData = () => {
     <div className="space-y-8 max-w-3xl">
       <div>
         <h2 className="text-xl font-medium mb-2">Account Information</h2>
-        <p className="text-sm text-stone-400">Update your username and email address here.</p>
+        <p className="text-sm text-stone-400">
+          Update your username and email address here.
+        </p>
       </div>
 
       <Separator />

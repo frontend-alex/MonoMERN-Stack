@@ -1,10 +1,12 @@
 import { cn } from "@/lib/utils";
+import { Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
+import { LoaderCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { LoaderCircle } from "lucide-react";
 import type { RegisterFormProps } from "@/types/types";
+import { ProviderButtons } from "../buttons/provider-buttons";
 import {
   Form,
   FormControl,
@@ -13,8 +15,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { ProviderButtons } from "../buttons/provider-buttons";
-import PasswordStrengthChecks from "@/components/PasswordChecker";
+
+const PasswordStrengthChecks = lazy(
+  () => import("@/components/PasswordChecker")
+);
 
 export function RegisterForm({
   className,
@@ -96,9 +100,11 @@ export function RegisterForm({
               />
 
               {registerForm.watch("password") ? (
-                <PasswordStrengthChecks
-                  password={registerForm.watch("password")}
-                />
+                <Suspense fallback={null}>
+                  <PasswordStrengthChecks
+                    password={registerForm.watch("password")}
+                  />
+                </Suspense>
               ) : null}
 
               <Button disabled={isPending} type="submit" className="w-full">

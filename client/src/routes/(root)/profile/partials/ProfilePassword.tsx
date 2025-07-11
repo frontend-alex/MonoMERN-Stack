@@ -17,8 +17,10 @@ import {
   updatePasswordSchema,
   type updatePasswordSchemaType,
 } from "@shared/schemas/auth/auth.schema";
-import PasswordStrengthChecks from "@/components/PasswordChecker";
 import { LoaderCircle } from "lucide-react";
+import { lazy, Suspense } from "react";
+
+const PasswordStrengthChecks = lazy(() => import("@/components/PasswordChecker"))
 
 const ProfilePassword = ({ user }: { user: User }) => {
   if (user.provider != AccountProviders.Credentials) return null;
@@ -94,7 +96,9 @@ const ProfilePassword = ({ user }: { user: User }) => {
               )}
             />
             {watch("newPassword") ? (
-              <PasswordStrengthChecks password={watch("newPassword")} />
+              <Suspense fallback={null}>
+                <PasswordStrengthChecks password={watch("newPassword")} />
+              </Suspense>
             ) : null}
             <FormField
               control={updatePasswordsForm.control}
