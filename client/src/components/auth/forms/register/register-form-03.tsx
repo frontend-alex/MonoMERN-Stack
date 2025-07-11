@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { ProviderButtons } from "../buttons/provider-buttons";
+import PasswordStrengthChecks from "@/components/PasswordChecker";
 
 export function RegisterForm({
   className,
@@ -100,6 +101,13 @@ export function RegisterForm({
                       </FormItem>
                     )}
                   />
+
+                  {registerForm.watch("password") ? (
+                    <PasswordStrengthChecks
+                      password={registerForm.watch("password")}
+                    />
+                  ) : null}
+
                   <Button disabled={isPending} type="submit" className="w-full">
                     {isPending ? (
                       <div className="flex items-center gap-3">

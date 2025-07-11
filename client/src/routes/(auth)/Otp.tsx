@@ -1,90 +1,79 @@
-import AppLogo from "@/components/AppLogo";
-
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useApiMutation } from "@/hooks/hook";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+
+import AppLogo from "@/components/AppLogo";
 import { OtpForm } from "@/components/auth/forms/otp/otp-form-02";
+import { useApiMutation } from "@/hooks/hook";
 import {
   otpSchema,
   type OtpSchemaType,
 } from "@shared/schemas/auth/auth.schema";
-import { useCallback, useEffect, useState } from "react";
-import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 
 const COOLDOWN_DURATION = 60;
 const STORAGE_KEY = "otp_last_sent_at";
 
 const Otp = () => {
-
   const navigate = useNavigate();
-
-  const queryParams = new URLSearchParams(location.search);
-  const email = queryParams.get("email") ?? "";
-
+  const email = new URLSearchParams(location.search).get("email") ?? "";
   const [cooldown, setCooldown] = useState(0);
 
-  const otpForm = useForm({
+  const otpForm = useForm<OtpSchemaType>({
     resolver: zodResolver(otpSchema),
-    defaultValues: {
-      pin: "",
-      email
-    },
+    defaultValues: { pin: "", email },
   });
 
   const { mutateAsync: sendOtp, isPending: isOtpPending } = useApiMutation(
     "POST",
-    "/auth/send-otp",{
+    "/auth/send-otp",
+    {
+      onSuccess: (data) => toast.success(data.message),
       onError: (err) => {
-         toast.error(err.response?.data.message)
-      }
+        toast.error(err.response?.data?.message || "Failed to send OTP");
+      },
     }
   );
 
   const { mutateAsync: verifyEmail, isPending: isOtpverifying } = useApiMutation(
     "PUT",
-    "/auth/validate-otp",{
+    "/auth/validate-otp",
+    {
+      onSuccess: () => navigate("/login"),
       onError: (err) => {
-        toast.error(err.response?.data.message)
+        toast.error(err.response?.data?.message || "Invalid OTP");
       },
-      onSuccess: () => {
-        navigate('/login')
-      }
     }
   );
 
-  const handleSubmit = useCallback(
-    (data: OtpSchemaType) => {
-      verifyEmail(data);
-    },
-    [verifyEmail]
-  );
+  const handleSubmit = (data: OtpSchemaType) => {
+    verifyEmail(data);
+  };
 
-  const resendOtp = useCallback(async () => {
-    await sendOtp({ email });
-
+  const resendOtp = async () => {
     if (cooldown > 0) return;
 
+    await sendOtp({ email });
     const now = Date.now();
     localStorage.setItem(STORAGE_KEY, now.toString());
     setCooldown(COOLDOWN_DURATION);
-  }, [cooldown]);
+  };
 
+  // On mount: check if cooldown should resume from localStorage
   useEffect(() => {
     const lastSent = localStorage.getItem(STORAGE_KEY);
     if (lastSent) {
-      const secondsPassed = Math.floor(
-        (Date.now() - parseInt(lastSent, 10)) / 1000
-      );
+      const secondsPassed = Math.floor((Date.now() - Number(lastSent)) / 1000);
       const remaining = COOLDOWN_DURATION - secondsPassed;
-      if (remaining > 0) {
-        setCooldown(remaining);
-      }
+      if (remaining > 0) setCooldown(remaining);
     }
   }, []);
 
+  // Cooldown countdown interval
   useEffect(() => {
     if (cooldown === 0) return;
+
     const interval = setInterval(() => {
       setCooldown((prev) => {
         if (prev <= 1) {
@@ -94,6 +83,7 @@ const Otp = () => {
         return prev - 1;
       });
     }, 1000);
+
     return () => clearInterval(interval);
   }, [cooldown]);
 

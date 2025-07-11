@@ -7,7 +7,7 @@ interface IUser extends Document {
   id:string;
   username: string;
   email: string;
-  password?: string | null;
+  password: string;
   provider: keyof typeof AccountProviders;
   hasPassword: boolean;
   emailVerified: boolean;

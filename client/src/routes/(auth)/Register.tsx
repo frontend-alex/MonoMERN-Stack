@@ -1,22 +1,21 @@
-import AppLogo from "@/components/AppLogo";
-
-import { toast } from "sonner";
-import { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useApiMutation, useApiQuery } from "@/hooks/hook";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+
+import AppLogo from "@/components/AppLogo";
 import { RegisterForm } from "@/components/auth/forms/register/register-form-02";
-import type { Providers } from "@/components/auth/forms/buttons/provider-buttons";
+import { useApiMutation, useApiQuery } from "@/hooks/hook";
 import {
   registrationSchema,
   type RegistrationSchemaType,
 } from "@shared/schemas/auth/auth.schema";
+import type { Providers } from "@/components/auth/forms/buttons/provider-buttons";
 
 const Register = () => {
   const navigate = useNavigate();
 
-  const registerForm = useForm<RegistrationSchemaType>({
+  const form = useForm<RegistrationSchemaType>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
       username: "",
@@ -25,45 +24,38 @@ const Register = () => {
     },
   });
 
-  const { mutateAsync: sendOtp } = useApiMutation("POST", "/auth/send-otp");
+  const { mutateAsync: sendOtp } = useApiMutation("POST", "/auth/send-otp", {
+    onSuccess: (data) => toast.success(data.message),
+    onError: (data) => toast.success(data.message),
+  });
 
   const { mutateAsync: register, isPending } = useApiMutation<
     { email: string },
     RegistrationSchemaType
   >("POST", "/auth/register", {
+    onSuccess: ({ data, message }) => {
+      const email = data?.email;
+      if (email) {
+        toast.success(message);
+        sendOtp({ email });
+        navigate(`/verify-email?email=${email}`);
+      }
+    },
     onError: (err) => {
-      const errorData = err.response?.data;
-
-      if (errorData?.otpRedirect && errorData?.email) {
-        navigate(`/verify-email?email=${errorData.email}`);
+      const error = err.response?.data;
+      if (error?.otpRedirect && error?.email) {
+        navigate(`/verify-email?email=${error.email}`);
         return;
       }
-
-      toast.error(
-        errorData?.userMessage || errorData?.message || "Something went wrong"
-      );
-    },
-    onSuccess: (data) => {
-      const email = data.data?.email;
-      navigate(`/verify-email?email=${email}`);
-      sendOtp({ email });
+      toast.error(error?.userMessage || error?.message || "Something went wrong");
     },
   });
 
-  const { data: providersResponse, isLoading: isProvidersPending } =
-    useApiQuery<{ publicProviders: Providers[] }>(
-      ["providers"],
-      "/auth/providers"
-    );
+  const { data: providerRes, isLoading: isProvidersPending } = useApiQuery<{
+    publicProviders: Providers[];
+  }>(["providers"], "/auth/providers");
 
-  const handleRegister = useCallback(
-    async (data: RegistrationSchemaType) => {
-      register(data);
-    },
-    [register]
-  );
-
-  const providers = providersResponse?.data?.publicProviders ?? [];
+  const handleRegister = (data: RegistrationSchemaType) => register(data);
 
   return (
     <div>
@@ -71,10 +63,10 @@ const Register = () => {
         <AppLogo />
       </div>
       <RegisterForm
-        registerForm={registerForm}
+        registerForm={form}
         handleSubmit={handleRegister}
         isPending={isPending}
-        providers={providers}
+        providers={providerRes?.data?.publicProviders ?? []}
         isProvidersPending={isProvidersPending}
       />
     </div>

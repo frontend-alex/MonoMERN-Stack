@@ -113,12 +113,12 @@ export function LoginForm({
                       </span>
                     </div>
 
-                     {providers && (
-                                        <ProviderButtons
-                                          providers={providers}
-                                          isPending={isPending}
-                                        />
-                                      )}
+                    {providers && (
+                      <ProviderButtons
+                        providers={providers}
+                        isPending={isPending}
+                      />
+                    )}
                     <div className="text-center text-sm">
                       Don&apos;t have an account?{" "}
                       <Link

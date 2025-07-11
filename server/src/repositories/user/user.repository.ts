@@ -1,7 +1,17 @@
 import { IUser, User } from "@/models/User";
+import { config } from "@shared/config/config";
 import { createError } from "@/middlewares/errors";
 
-export const safeUpdate = async (
+function filterAllowedUpdates<T extends Record<string, any>>(
+  updates: T,
+  allowedFields: string[]
+): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(updates).filter(([key]) => allowedFields.includes(key))
+  ) as Partial<T>;
+}
+
+const safeUpdate = async (
   query: Record<string, any>,
   update: Record<string, any>
 ): Promise<IUser | null> => {
@@ -12,7 +22,23 @@ export const safeUpdate = async (
   }
 };
 
-export const findByEmail = async (email: string): Promise<IUser | null> => {
+const updateUser = async (
+  query: Record<string, any>,
+  update: Record<string, any>
+): Promise<IUser | null> => {
+  try {
+    const filteredUpdate = filterAllowedUpdates(
+      update,
+      config.user.allowedUpdates
+    );
+
+    return await User.findOneAndUpdate(query, filteredUpdate, { new: true });
+  } catch {
+    throw createError("DATABASE_ERROR");
+  }
+};
+
+const findByEmail = async (email: string): Promise<IUser | null> => {
   try {
     return await User.findOne({ email });
   } catch {
@@ -20,17 +46,15 @@ export const findByEmail = async (email: string): Promise<IUser | null> => {
   }
 };
 
-export const findById = async (userId: string): Promise<IUser | null> => {
+const findById = async (userId: string): Promise<IUser | null> => {
   try {
-    return await User.findById(userId).select("-password -refreshToken")
+    return await User.findById(userId);
   } catch {
     throw createError("DATABASE_ERROR");
   }
 };
 
-export const findByUsername = async (
-  username: string
-): Promise<IUser | null> => {
+const findByUsername = async (username: string): Promise<IUser | null> => {
   try {
     return await User.findOne({ username }).select(
       "-email -createdAt -updatedAt -_id"
@@ -38,4 +62,12 @@ export const findByUsername = async (
   } catch {
     throw createError("DATABASE_ERROR");
   }
+};
+
+export const UserRepo = {
+  safeUpdate,
+  updateUser,
+  findByEmail,
+  findById,
+  findByUsername,
 };

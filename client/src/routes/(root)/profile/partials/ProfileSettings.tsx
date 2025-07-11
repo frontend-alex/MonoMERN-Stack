@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const ProfileSettings = () => {
   return (
-    <Card className="bg-red-600/20">
+    <Card className="bg-red-600/10 border-none shadow-none">
       <CardContent>
         <div>
           <h3 className="font-medium text-lg text-red-600/50">Danger Zone</h3>

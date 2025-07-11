@@ -12,8 +12,8 @@ const LandingPage = () => {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className="min-h-screen relative">
-      <header className="relative z-10 p-5">
+    <div className="h-screen relative">
+      <nav className="relative z-10 p-5">
         <div className="flex justify-end items-center">
           {isAuthenticated ? (
             <Suspense fallback={<UserDropdownSkeleton />}>
@@ -33,9 +33,9 @@ const LandingPage = () => {
           )}
           <div className="flex gap-3"></div>
         </div>
-      </header>
+      </nav>
 
-      <main className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-120px)] p-8">
+      <main className="relative z-10 flex flex-col items-center justify-center p-8 overflow-hidden">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-8">
             <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg bg-accent">

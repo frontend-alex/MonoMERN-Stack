@@ -4,9 +4,15 @@ import AuthLayout from "@/components/layouts/AuthLayout";
 import RootLayout from "@/components/layouts/RootLayout";
 
 import { Suspense } from "react";
-import { Dashboard, Profile } from "@/routes/(root)";
+import { Dashboard, Profile, Settings } from "@/routes/(root)";
 import { Route, Routes } from "react-router-dom";
-import { AuthCallback, LandingPage, Login, Otp, Register } from "@/routes/(auth)";
+import {
+  AuthCallback,
+  LandingPage,
+  Login,
+  Otp,
+  Register,
+} from "@/routes/(auth)";
 
 const App = () => {
   return (
@@ -17,6 +23,14 @@ const App = () => {
           element={
             <TitleWrapper title="Landing Page">
               <LandingPage />
+            </TitleWrapper>
+          }
+        />
+        <Route
+          path="/verify-email"
+          element={
+            <TitleWrapper title="Verify Email">
+              <Otp />
             </TitleWrapper>
           }
         />
@@ -38,14 +52,6 @@ const App = () => {
             }
           />
           <Route
-            path="/verify-email"
-            element={
-              <TitleWrapper title="Verify Email">
-                <Otp />
-              </TitleWrapper>
-            }
-          />
-           <Route
             path="/auth/callback"
             element={
               <TitleWrapper title="Verifying...">
@@ -68,6 +74,14 @@ const App = () => {
             element={
               <TitleWrapper title="Dashboard Page">
                 <Profile />
+              </TitleWrapper>
+            }
+          />
+           <Route
+            path="/settings"
+            element={
+              <TitleWrapper title="Settings Page">
+                <Settings />
               </TitleWrapper>
             }
           />

@@ -1,23 +1,21 @@
+import bcrypt from "bcrypt";
 import { env } from "@/config/env";
+import { jwtUtils } from "@/utils/jwt";
+import { EmailUtils } from "@/utils/email";
+import { generateOTP } from "@/utils/utils";
 import { DecodedUser } from "@/middlewares/auth";
 import { createError } from "@/middlewares/errors";
-import { createUser } from "@/repositories/auth/auth.repository";
-import {
-  findByEmail,
-  findByUsername,
-  safeUpdate,
-} from "@/repositories/user/user.repository";
-import { getEmailTemplate, sendEmail } from "@/utils/email";
-import { jwtUtils } from "@/utils/jwt";
-import { generateOTP } from "@/utils/utils";
-import { AccountProviders } from '@shared/types/enums'
+import { AccountProviders } from "@shared/types/enums";
+import { UserRepo } from "@/repositories/user/user.repository";
+import { AuthRepo } from "@/repositories/auth/auth.repository";
 
-export const loginService = async (email: string, password: string) => {
+const login = async (email: string, password: string) => {
   try {
-    const user = await findByEmail(email);
+    const user = await UserRepo.findByEmail(email);
     if (!user) throw createError("USER_NOT_FOUND");
 
-    if(user.provider != AccountProviders.Credentials) throw createError("ACCOUNT_ALREADY_CONNECTED_WITH_PROVIDER")
+    if (user.provider != AccountProviders.Credentials)
+      throw createError("ACCOUNT_ALREADY_CONNECTED_WITH_PROVIDER");
 
     const isMatch = await user.matchPassword(password);
     if (!isMatch) throw createError("INVALID_CURRENT_PASSWORD");
@@ -30,18 +28,14 @@ export const loginService = async (email: string, password: string) => {
   }
 };
 
-export const handleAuthCallbackService = async (user: DecodedUser) => {
+const handleAuthCallback = async (user: DecodedUser) => {
   if (!user) throw createError("USER_NOT_FOUND");
   return jwtUtils.generateToken(user.id, user.username);
 };
 
-export const registerService = async (
-  username: string,
-  email: string,
-  password: string
-) => {
+const register = async (username: string, email: string, password: string) => {
   try {
-    const existingUserEmail = await findByEmail(email);
+    const existingUserEmail = await UserRepo.findByEmail(email);
     if (existingUserEmail) {
       if (!existingUserEmail.emailVerified) {
         throw createError("EMAIL_ALREADY_TAKEN", {
@@ -52,48 +46,48 @@ export const registerService = async (
       throw createError("EMAIL_ALREADY_TAKEN");
     }
 
-    const existingUserUsername = await findByUsername(username);
+    const existingUserUsername = await UserRepo.findByUsername(username);
     if (existingUserUsername) throw createError("USERNAME_ALREADY_TAKEN");
 
-    return await createUser(username, email, password);
+    return await AuthRepo.createUser(username, email, password);
   } catch (err) {
     throw err;
   }
 };
 
-export const sendOtpService = async (email: string) => {
+const sendOtp = async (email: string) => {
   try {
     const otp = generateOTP();
     const otpExpiry = Date.now() + env.OTP_EXPIRY;
 
-    const user = await findByEmail(email);
+    const user = await UserRepo.findByEmail(email);
 
     if (!user) throw createError("USER_NOT_FOUND");
     if (user.emailVerified) throw createError("EMAIL_ALREADY_VERIFIED");
 
-    await safeUpdate({ email }, { otp, otpExpiry });
+    await UserRepo.safeUpdate({ email }, { otp, otpExpiry });
 
-    const otpEmail = getEmailTemplate("otp");
+    const otpEmail = EmailUtils.getEmailTemplate("otp");
     const html = otpEmail
       .replace("{{OTP_CODE}}", otp)
       .replace("{{YEAR}}", new Date().getFullYear().toString());
 
-    await sendEmail(email, "Your OTP code", html);
+    await EmailUtils.sendEmail(email, "Your OTP code", html);
   } catch (err) {
     throw err;
   }
 };
 
-export const validateOtpService = async (email: string, otp: string) => {
+const validateOtp = async (email: string, otp: string) => {
   try {
-    const user = await findByEmail(email);
+    const user = await UserRepo.findByEmail(email);
     if (!user) throw createError("USER_NOT_FOUND");
 
     if (!user || !user.otp) throw createError("OTP_NOT_FOUND");
     if (Date.now() > user.otpExpiry!) throw createError("OTP_EXPIRED");
     if (user.otp !== otp) throw createError("INVALID_OTP");
 
-    await safeUpdate(
+    await UserRepo.safeUpdate(
       { email },
       {
         $set: { emailVerified: true },
@@ -103,4 +97,36 @@ export const validateOtpService = async (email: string, otp: string) => {
   } catch (err) {
     throw err;
   }
+};
+
+const updatePassword = async (
+  userId: string,
+  currentPassword: string,
+  newPassword: string
+) => {
+  try {
+    const user = await UserRepo.findById(userId);
+    if (!user) throw createError("USER_NOT_FOUND");
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) throw createError("INVALID_CURRENT_PASSWORD");
+
+    if (currentPassword === newPassword) throw createError("SAME_PASSWORD");
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await UserRepo.safeUpdate({ id: user.id }, { password: hashedPassword });
+  } catch (err) {
+    console.log(err)
+    throw err;
+  }
+};
+
+export const AuthService = {
+  login,
+  sendOtp,
+  register,
+  validateOtp,
+  updatePassword,
+  handleAuthCallback,
 };

@@ -1,16 +1,10 @@
 import { env } from "@/config/env";
+import { DecodedUser } from "@/middlewares/auth";
 import { strategies } from "@/constants/authProviders";
 import { NextFunction, Request, Response } from "express";
-import {
-  registerService,
-  sendOtpService,
-  validateOtpService,
-  loginService,
-  handleAuthCallbackService,
-} from "@/services/auth/auth.service";
-import { DecodedUser } from "@/middlewares/auth";
+import { AuthService } from "@/services/auth/auth.service";
 
-export const providers = (_req: Request, res: Response, next: NextFunction) => {
+const providers = (_req: Request, res: Response, next: NextFunction) => {
   try {
     const publicProviders = strategies
       .filter((s) => s.enabled)
@@ -31,13 +25,13 @@ export const providers = (_req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export const handleAuthCallback = async (
+const handleAuthCallback = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const token = await handleAuthCallbackService(req.user as DecodedUser);
+    const token = await AuthService.handleAuthCallback(req.user as DecodedUser);
 
     const redirectUrl = Array.isArray(env.CORS_ORIGINS)
       ? env.CORS_ORIGINS[0]
@@ -52,26 +46,16 @@ export const handleAuthCallback = async (
     });
 
     res.status(201).redirect(`${redirectUrl}/auth/callback?token=${token}`);
-
-    // res.status(201).json({
-    //   success: true,
-    //   message: "Successfully logged in",
-    // });
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
 
-export const login = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const login = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
 
   try {
-    const token = await loginService(email, password);
+    const token = await AuthService.login(email, password);
 
     res.cookie("access_token", token, {
       httpOnly: true,
@@ -81,28 +65,24 @@ export const login = async (
       path: "/",
     });
 
-    // res.status(201).json({
-    //   success: true,
-    //   message: "Successfully logged in",
-    // });
+    res.status(201).json({
+      success: true,
+      message: "Successfully logged in",
+    });
   } catch (err) {
     next(err);
   }
 };
 
-export const register = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const register = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password, username } = req.body;
 
   try {
-    await registerService(username, email, password);
+    await AuthService.register(username, email, password);
 
     res.status(201).json({
       success: true,
-      message: "User successfully created",
+      message: "Registration successfully made",
       data: {
         email,
       },
@@ -112,15 +92,34 @@ export const register = async (
   }
 };
 
-export const sendOtp = async (
+const updatePassword = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+
+  const { password, newPassword } = req.body
+
+  const userId = req.user?.id!
+
+  try {
+    await AuthService.updatePassword(userId, password, newPassword);
+
+    res.status(201).json({
+      success: true,
+      message: "Password successfully changed",
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
+
+const sendOtp = async (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;
 
   try {
-    await sendOtpService(email);
+    await AuthService.sendOtp(email);
 
     res.status(201).json({
       success: true,
@@ -131,15 +130,11 @@ export const sendOtp = async (
   }
 };
 
-export const validateOtp = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const validateOtp = async (req: Request, res: Response, next: NextFunction) => {
   const { email, pin } = req.body;
 
   try {
-    await validateOtpService(email, pin);
+    await AuthService.validateOtp(email, pin);
 
     res.status(200).json({
       success: true,
@@ -150,11 +145,7 @@ export const validateOtp = async (
   }
 };
 
-export const logout = async (
-  _req: Request,
-  res: Response,
-  _next: NextFunction
-) => {
+const logout = async (_req: Request, res: Response, _next: NextFunction) => {
   res.clearCookie("access_token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -166,4 +157,15 @@ export const logout = async (
     success: true,
     message: "Successfully logged out",
   });
+};
+
+export const AuthController = {
+  login,
+  logout,
+  sendOtp,
+  register,
+  providers,
+  validateOtp,
+  updatePassword,
+  handleAuthCallback,
 };

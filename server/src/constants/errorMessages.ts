@@ -218,6 +218,12 @@ export const USER_ERRORS = {
     message: "User not found.",
     userMessage: "We couldn’t find a user with that information.",
   },
+  NO_UPDATES_PROVIDED: {
+    errorCode: "USER_002",
+    statusCode: 400,
+    message: "No update fields provided.",
+    userMessage: "Please provide at least one field to update.",
+  },
 };
 
 export const EMAIL_ERRORS = {

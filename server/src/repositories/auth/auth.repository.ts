@@ -1,10 +1,9 @@
 import { IUser, User } from "@/models/User";
 import { createError } from "@/middlewares/errors";
 import { AccountProviders } from "@shared/types/enums";
-import { safeUpdate } from "@/repositories/user/user.repository";
+import { UserRepo } from "@/repositories/user/user.repository";
 
-
-export const createUser = async (
+const createUser = async (
   username: string,
   email: string,
   password: string
@@ -18,57 +17,53 @@ export const createUser = async (
 
     await user.save();
     return user;
-  } catch(err) {
+  } catch (err) {
     throw createError("REGISTRATION_FAILED");
   }
 };
 
-export const CreateOAuthUser = async (
+const CreateOAuthUser = async (
   username: string,
   email: string,
-  provider: AccountProviders,
+  provider: AccountProviders
 ): Promise<IUser> => {
   try {
     const user = new User({
       email,
       username,
       provider,
+      password: "",
       emailVerified: true,
       hasPassword: false,
     });
 
     await user.save();
     return user;
-  } catch(err) {
-    console.log(err)
+  } catch (err) {
     throw createError("DATABASE_ERROR");
   }
 };
 
-export const createPassword = async (
-  email: string,
+const createPassword = async (
+  id: string,
   password: string
 ): Promise<IUser | null> => {
-  return safeUpdate({ email }, { password, hasPassword: true });
+  return UserRepo.safeUpdate({ id }, { password, hasPassword: true });
 };
 
-export const updatePassword = async (
-  email: string,
-  newPassword: string
-): Promise<IUser | null> => {
-  return safeUpdate({ email }, { password: newPassword });
-};
 
-export const setResetToken = async (
-  email: string,
+const setResetToken = async (
+  id: string,
   resetToken: string,
   resetTokenExpires: Date
 ): Promise<IUser | null> => {
-  return safeUpdate({ email }, { resetToken, resetTokenExpires });
+  return UserRepo.safeUpdate({ id }, { resetToken, resetTokenExpires });
 };
 
-export const clearResetToken = async (
-  email: string
-): Promise<IUser | null> => {
-  return safeUpdate({ email }, { $unset: { resetToken: 1, resetTokenExpires: 1 } });
+
+export const AuthRepo = {
+  createUser,
+  CreateOAuthUser,
+  createPassword,
+  setResetToken,
 };

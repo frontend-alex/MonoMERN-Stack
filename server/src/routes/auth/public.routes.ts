@@ -1,32 +1,26 @@
+import passport from "passport";
+
 import { Router } from "express";
 
 import { validate } from "@/middlewares/validation";
+import { AuthController } from "@/controllers/auth/auth.controller";
+import { strategies } from "@/constants/authProviders";
 import {
-  login,
-  providers,
-  register,
-  sendOtp,
-  validateOtp,
-  handleAuthCallback,
-} from "@/controllers/auth/auth.controller";
-import {
-  emailSchema,
   loginSchema,
   otpSchema,
   registrationSchema,
 } from "@shared/schemas/auth/auth.schema";
-import { strategies } from "@/constants/authProviders";
-import passport from "passport";
+import { emailSchema } from "@shared/schemas/user/user.schema";
 
 const router = Router();
 
-router.post("/login", validate(loginSchema), login);
-router.post("/register", validate(registrationSchema), register);
+router.post("/login", validate(loginSchema), AuthController.login);
+router.post("/register", validate(registrationSchema), AuthController.register);
 
-router.post("/send-otp", validate(emailSchema), sendOtp);
-router.put("/validate-otp", validate(otpSchema), validateOtp);
+router.post("/send-otp", validate(emailSchema, "body", "email"), AuthController.sendOtp);
+router.put("/validate-otp", validate(otpSchema), AuthController.validateOtp);
 
-router.get("/providers", providers);
+router.get("/providers", AuthController.providers);
 
 strategies.forEach(({ name }) => {
   router.get(
@@ -35,13 +29,13 @@ strategies.forEach(({ name }) => {
   );
 
   router.get(
-  `/${name}/callback`,
-  passport.authenticate(name, {
-    failureRedirect: "/login",
-    session: false,
-  }),
-  handleAuthCallback
-);
+    `/${name}/callback`,
+    passport.authenticate(name, {
+      failureRedirect: "/login",
+      session: false,
+    }),
+    AuthController.handleAuthCallback
+  );
 });
 
 export { router as publicAuthRoutes };

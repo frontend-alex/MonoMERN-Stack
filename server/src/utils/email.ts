@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const getEmailTemplate = (templateName: string): string => {
+const getEmailTemplate = (templateName: string): string => {
   const templatePath = path.resolve(__dirname, `../templates/${templateName}.html`);
   try {
     return fs.readFileSync(templatePath, "utf-8");
@@ -21,7 +21,7 @@ export const getEmailTemplate = (templateName: string): string => {
   }
 };
 
-export const sendEmail = async (to: string, subject: string, html: string): Promise<void> => {
+const sendEmail = async (to: string, subject: string, html: string): Promise<void> => {
   try {
     await transporter.sendMail({
       from: env.OTP_EMAIL,
@@ -33,3 +33,9 @@ export const sendEmail = async (to: string, subject: string, html: string): Prom
     throw createError("EMAIL_SENDING_FAILED");
   }
 };
+
+
+export const EmailUtils = {
+  getEmailTemplate,
+  sendEmail
+}

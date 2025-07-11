@@ -15,6 +15,7 @@ import {
 import { LoaderCircle } from "lucide-react";
 import type { RegisterFormProps } from "@/types/types";
 import { ProviderButtons } from "../buttons/provider-buttons";
+import PasswordStrengthChecks from "@/components/PasswordChecker";
 
 export function RegisterForm({
   className,
@@ -102,6 +103,8 @@ export function RegisterForm({
                         </FormItem>
                       )}
                     />
+
+                    {registerForm.watch("password") ? <PasswordStrengthChecks password={registerForm.watch("password")}/> : null}
 
                     <Button
                       disabled={isPending}
