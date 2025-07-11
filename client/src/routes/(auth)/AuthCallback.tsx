@@ -1,11 +1,11 @@
-import { useAuth } from "@/contexts/AuthContext";
-import { useApiMutation } from "@/hooks/hook";
 import { useEffect } from "react";
+import { useApiMutation } from "@/hooks/hook";
 import { useNavigate } from "react-router-dom";
+import { QueryClient } from "@tanstack/react-query";
 
 const AuthCallback = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const queryClient = new QueryClient();
 
   const {  mutateAsync: login } = useApiMutation("POST", '/auth/login')
 
@@ -19,21 +19,16 @@ const AuthCallback = () => {
       }
 
       try {
-        await login(token);
+          queryClient.invalidateQueries({ queryKey: ['auth', 'me'] });
       } catch (error) {
         navigate("/login");
-        return;
       }
+      
     };
 
     handleAuth();
   }, [login, navigate]);
 
-  useEffect(() => {
-    if (user) {
-      navigate("/dashboard");
-    }
-  }, [user, navigate]);
 
   return (
     <div className="flex justify-center items-center h-screen">

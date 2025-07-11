@@ -1,10 +1,12 @@
-import { memo } from "react";
+import { lazy, memo, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent } from "@/components/ui/card";
+import { UserDropdownSkeleton } from "@/components/dropdowns/user-dropdown";
 import { ArrowRight, Github, Sparkles, Rocket, Layers } from "lucide-react";
-import { UserDropdown } from "@/components/sidebars/user-nav";
+
+const LazyUserDropdown = lazy(() => import("@/components/dropdowns/user-dropdown"));
 
 const LandingPage = () => {
   const { isAuthenticated } = useAuth();
@@ -14,9 +16,11 @@ const LandingPage = () => {
       <header className="relative z-10 p-5">
         <div className="flex justify-end items-center">
           {isAuthenticated ? (
-            <div>
-              <UserDropdown />
-            </div>
+            <Suspense fallback={<UserDropdownSkeleton />}>
+              <div>
+                <LazyUserDropdown />
+              </div>
+            </Suspense>
           ) : (
             <div className="flex items-center gap-3">
               <Link to="/login">
@@ -82,7 +86,7 @@ const LandingPage = () => {
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button variant="outline" size="lg">
-              <Github className="mr-2 h-4 w-4" />
+              <img loading="lazy" src="/images/providers/github.webp" className="size-4"/>
               View on GitHub
             </Button>
           </div>

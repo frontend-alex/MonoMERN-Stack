@@ -26,7 +26,7 @@ export const createUser = async (
 export const CreateOAuthUser = async (
   username: string,
   email: string,
-  provider: keyof typeof AccountProviders = AccountProviders.Credentials,
+  provider: AccountProviders,
 ): Promise<IUser> => {
   try {
     const user = new User({
@@ -39,7 +39,8 @@ export const CreateOAuthUser = async (
 
     await user.save();
     return user;
-  } catch {
+  } catch(err) {
+    console.log(err)
     throw createError("DATABASE_ERROR");
   }
 };

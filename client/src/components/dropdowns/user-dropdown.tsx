@@ -13,15 +13,28 @@ import { getUserInitials } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  BadgeCheck,
-  Bell,
   ChevronsUpDown,
-  CreditCard,
+  Layout,
   LogOut,
   Sparkles,
+  User,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
-const UserDropdownSkeleton = () => {
+const dropdownLinks = [
+  {
+    name: "Dashboard",
+    url: "/dashboard",
+    icon: Layout,
+  },
+  {
+    name: "Profile",
+    url: "/profile",
+    icon: User,
+  },
+];
+
+export const UserDropdownSkeleton = () => {
   return (
     <Button
       variant="ghost"
@@ -37,7 +50,7 @@ const UserDropdownSkeleton = () => {
   );
 };
 
-export function UserDropdown({
+export default function UserDropdown({
   align = "end",
   side = "bottom",
 }: {
@@ -102,21 +115,20 @@ export function UserDropdown({
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <BadgeCheck />
-            Account
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CreditCard />
-            Billing
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Bell />
-            Notifications
-          </DropdownMenuItem>
+          {dropdownLinks.map((link) => (
+            <Link to={link.url}>
+              <DropdownMenuItem>
+                <link.icon />
+                {link.name}
+              </DropdownMenuItem>
+            </Link>
+          ))}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-destructive cursor-pointer" onClick={logout}>
+        <DropdownMenuItem
+          className="text-destructive cursor-pointer"
+          onClick={logout}
+        >
           <LogOut className="text-destructive" />
           Log out
         </DropdownMenuItem>

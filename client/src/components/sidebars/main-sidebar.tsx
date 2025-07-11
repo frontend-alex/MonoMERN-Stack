@@ -1,16 +1,13 @@
-"use client";
+import AppLogo from "../AppLogo";
 
-import * as React from "react";
 import {
-  BookOpen,
-  Bot,
   Frame,
   LifeBuoy,
   Map,
   PieChart,
   Send,
   Settings2,
-  SquareTerminal,
+  User,
 } from "lucide-react";
 
 import {
@@ -22,11 +19,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { UserDropdown } from "./user-nav";
-import { NavProjects } from "./secondary-nav";
+import { lazy, Suspense } from "react";
 import { NavMain } from "./main-nav";
-import AppLogo from "../AppLogo";
-import { useAuth } from "@/contexts/AuthContext";
+import { NavProjects } from "./secondary-nav";
+import { UserDropdownSkeleton } from "@/components/dropdowns/user-dropdown";
+
+const LazyUserDropdown = lazy(() => import("@/components/dropdowns/user-dropdown"))
 
 const data = {
   user: {
@@ -36,87 +34,18 @@ const data = {
   },
   navMain: [
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
       title: "Settings",
-      url: "#",
+      url: "/settings",
       icon: Settings2,
       items: [
         {
-          title: "General",
-          url: "#",
+          title: "Settings",
+          url: "/settings",
+          icon: User
         },
         {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
+          title: "Profile",
+          url: "/profile",
         },
       ],
     },
@@ -172,7 +101,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* <NavSecondar items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
-        <UserDropdown />
+        <Suspense fallback={<UserDropdownSkeleton/>}>
+          <LazyUserDropdown />
+        </Suspense>
       </SidebarFooter>
     </Sidebar>
   );

@@ -5,7 +5,7 @@ import { AccountProviders } from "@shared/types/enums";
 import { CreateOAuthUser } from "@/repositories/auth/auth.repository";
 import { findByEmail, findById } from "@/repositories/user/user.repository";
 
-strategies.forEach(({ name, Strategy, config }) => {
+strategies.forEach(({ Strategy, config, label }) => {
   passport.use(
     new Strategy(config, async (accessToken, refreshToken, profile, done) => {
       try {
@@ -17,7 +17,7 @@ strategies.forEach(({ name, Strategy, config }) => {
         let user = await findByEmail(email);
 
         if (!user) {
-          user = await CreateOAuthUser(username, email, name as keyof typeof AccountProviders);
+          user = await CreateOAuthUser(username, email, label as AccountProviders);
         }
 
         return done(null, user);

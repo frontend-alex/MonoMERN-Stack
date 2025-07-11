@@ -9,6 +9,7 @@ const corsValidator = makeValidator((input: string) => {
 dotenv.config();
 
 export const env = cleanEnv(process.env, {
+  // Runtime
   NODE_ENV: str({
     choices: ["development", "test", "production"],
     default: "development",
@@ -37,25 +38,58 @@ export const env = cleanEnv(process.env, {
   REQUEST_BODY_LIMIT: str({ default: "10kb" }),
   TRUSTED_PROXIES: str({ default: "" }),
 
-  //Database
+  // Database
   DB_LOCAL_URI: str({ default: "" }),
 
-  //otp
-  OTP_EXPIRY: num({ default: 5 * 60 * 1000 }),
-
-  //email
+  // OTP Email
   OTP_EMAIL: str(),
   OTP_EMAIL_PASSWORD: str(),
   OTP_EMAIL_SERVICE: str({ default: "gmail" }),
+  OTP_EXPIRY: num({ default: 5 * 60 * 1000 }),
 
-  //google
-  GOOGLE_CLIENT_ID: str(),
-  GOOGLE_CLIENT_SECRET: str(),
-
-  //jwt
+  // JWT
   JWT_SECRET: str(),
   JWT_REFRESH_SECRET: str(),
-  JWT_EXPIRATION: str({ default: "1h"}),
+  JWT_EXPIRATION: str({ default: "1h" }),
+
+  // === SOCIAL AUTH ===
+
+  // Google
+  GOOGLE_CLIENT_ID: str({ default: "" }),
+  GOOGLE_CLIENT_SECRET: str({ default: "" }),
+
+  // GitHub
+  GITHUB_CLIENT_ID: str({ default: "" }),
+  GITHUB_CLIENT_SECRET: str({ default: "" }),
+
+  // Facebook
+  FACEBOOK_CLIENT_ID: str({ default: "" }),
+  FACEBOOK_CLIENT_SECRET: str({ default: "" }),
+
+  // Twitter
+  TWITTER_CONSUMER_KEY: str({ default: "" }),
+  TWITTER_CONSUMER_SECRET: str({ default: "" }),
+
+  // LinkedIn
+  LINKEDIN_CLIENT_ID: str({ default: "" }),
+  LINKEDIN_CLIENT_SECRET: str({ default: "" }),
+
+  // Instagram
+  INSTAGRAM_CLIENT_ID: str({ default: "" }),
+  INSTAGRAM_CLIENT_SECRET: str({ default: "" }),
+
+  // Auth0
+  AUTH0_DOMAIN: str({ default: "" }),
+  AUTH0_CLIENT_ID: str({ default: "" }),
+  AUTH0_CLIENT_SECRET: str({ default: "" }),
+
+  // Spotify
+  SPOTIFY_CLIENT_ID: str({ default: "" }),
+  SPOTIFY_CLIENT_SECRET: str({ default: "" }),
+
+  // Generic OAuth2 (Optional/Fallback)
+  OAUTH2_CLIENT_ID: str({ default: "" }),
+  OAUTH2_CLIENT_SECRET: str({ default: "" }),
 });
 
 export function getAppUrl() {
@@ -70,7 +104,3 @@ export function getAppUrl() {
 
   return `${protocol}://${host}${portSegment}`;
 }
-
-
-export type AppEnv = typeof env;
-

@@ -1,13 +1,14 @@
 import Loading from "@/components/Loading";
 
 import { useAuth } from "@/contexts/AuthContext";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { AppSidebar } from "../sidebars/main-sidebar";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 import { Separator } from "@radix-ui/react-separator";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 
 const RootLayout = () => {
   const location = useLocation();
+
   const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) return <Loading />;
@@ -18,7 +19,7 @@ const RootLayout = () => {
 
   return (
     <div>
-      <SidebarProvider>
+      <SidebarProvider> 
         <AppSidebar />
         <SidebarInset className="p-5">
           <SidebarTrigger className="-ml-1" />

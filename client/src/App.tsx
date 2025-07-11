@@ -4,9 +4,9 @@ import AuthLayout from "@/components/layouts/AuthLayout";
 import RootLayout from "@/components/layouts/RootLayout";
 
 import { Suspense } from "react";
-import { Dashboard } from "@/routes/(root)";
+import { Dashboard, Profile } from "@/routes/(root)";
 import { Route, Routes } from "react-router-dom";
-import { LandingPage, Login, Otp, Register } from "@/routes/(auth)";
+import { AuthCallback, LandingPage, Login, Otp, Register } from "@/routes/(auth)";
 
 const App = () => {
   return (
@@ -45,6 +45,14 @@ const App = () => {
               </TitleWrapper>
             }
           />
+           <Route
+            path="/auth/callback"
+            element={
+              <TitleWrapper title="Verifying...">
+                <AuthCallback />
+              </TitleWrapper>
+            }
+          />
         </Route>
         <Route element={<RootLayout />}>
           <Route
@@ -52,6 +60,14 @@ const App = () => {
             element={
               <TitleWrapper title="Dashboard Page">
                 <Dashboard />
+              </TitleWrapper>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <TitleWrapper title="Dashboard Page">
+                <Profile />
               </TitleWrapper>
             }
           />

@@ -10,11 +10,14 @@ import {
 import { getEmailTemplate, sendEmail } from "@/utils/email";
 import { jwtUtils } from "@/utils/jwt";
 import { generateOTP } from "@/utils/utils";
+import { AccountProviders } from '@shared/types/enums'
 
 export const loginService = async (email: string, password: string) => {
   try {
     const user = await findByEmail(email);
     if (!user) throw createError("USER_NOT_FOUND");
+
+    if(user.provider != AccountProviders.Credentials) throw createError("ACCOUNT_ALREADY_CONNECTED_WITH_PROVIDER")
 
     const isMatch = await user.matchPassword(password);
     if (!isMatch) throw createError("INVALID_CURRENT_PASSWORD");

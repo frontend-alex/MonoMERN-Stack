@@ -35,6 +35,13 @@ export const AUTH_ERRORS = {
     message: "Email is already in use.",
     userMessage: "This email is already taken. Please use another.",
   },
+  ACCOUNT_ALREADY_CONNECTED_WITH_PROVIDER: {
+    errorCode: "AUTH_018",
+    statusCode: 400,
+    message: "Account already registered using a third-party provider.",
+    userMessage:
+      "This email is already linked to a social login. Please sign in using that provider instead.",
+  },
   EMAIL_NOT_VERIFIED: {
     errorCode: "AUTH_006",
     statusCode: 403,

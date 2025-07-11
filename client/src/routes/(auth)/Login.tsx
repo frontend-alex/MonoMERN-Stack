@@ -56,6 +56,7 @@ const Login = () => {
   );
 
   const providers = providersResponse?.data?.publicProviders ?? [];
+  console.log(providers)
 
   return (
     <div>

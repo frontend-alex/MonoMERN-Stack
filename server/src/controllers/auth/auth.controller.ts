@@ -31,21 +31,37 @@ export const providers = (_req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export const handleAuthCallback = (req: Request, res: Response, next: NextFunction) => {
-  try{
-    console.log(req.user)
-    const token = handleAuthCallbackService(req.user as DecodedUser)
+export const handleAuthCallback = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const token = await handleAuthCallbackService(req.user as DecodedUser);
 
-     const redirectUrl = Array.isArray(env.CORS_ORIGINS)
+    const redirectUrl = Array.isArray(env.CORS_ORIGINS)
       ? env.CORS_ORIGINS[0]
       : env.CORS_ORIGINS;
 
-    res.status(201).redirect(`${redirectUrl}/auth/callback?token=${token}`)
-  } catch(err){
-    console.log(err)
-    next(err)
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/",
+    });
+
+    res.status(201).redirect(`${redirectUrl}/auth/callback?token=${token}`);
+
+    // res.status(201).json({
+    //   success: true,
+    //   message: "Successfully logged in",
+    // });
+  } catch (err) {
+    console.log(err);
+    next(err);
   }
-}
+};
 
 export const login = async (
   req: Request,
@@ -65,10 +81,10 @@ export const login = async (
       path: "/",
     });
 
-    res.status(201).json({
-      success: true,
-      message: "Successfully logged in",
-    });
+    // res.status(201).json({
+    //   success: true,
+    //   message: "Successfully logged in",
+    // });
   } catch (err) {
     next(err);
   }

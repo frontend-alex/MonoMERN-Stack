@@ -15,7 +15,7 @@ export const ProviderButtons: React.FC<ProviderButtonsProps> = ({ providers, isP
   const showText = providers?.length <= 2;
 
   return (
-    <div className="flex flex-row gap-3">
+    <div className={`grid gap-3 grid-cols-${Math.min(providers?.length || 1, 5)}`}>
       {providers?.map(({ name, label }) => (
         <Button
           key={name}
@@ -23,9 +23,9 @@ export const ProviderButtons: React.FC<ProviderButtonsProps> = ({ providers, isP
           variant="outline"
           disabled={isPending}
           className="flex-1 items-center justify-center gap-2 cursor-pointer"
-          onClick={() => window.location.href = `${API_URL}auth/${name}`}
+          onClick={() => window.open(`${API_URL}auth/${name}`, '_blank', 'noopener,noreferrer')}
         >
-          <img className="w-5 h-5" src={`/images/${name}.png`}/>
+          <img loading="lazy" className="w-5 h-5" src={`/images/providers/${name}.webp`}/>
           {showText && <span>{`${label}`}</span>}
         </Button>
       ))}
