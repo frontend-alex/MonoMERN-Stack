@@ -10,26 +10,30 @@ export const getPasswordChecks = (password: string) => {
     {
       label: "At least " + rules.minLength + " characters",
       isValid: password.length >= rules.minLength,
+      allowed: config.user.passwordRules.minLength,
     },
     {
       label: "Uppercase letter",
       isValid: !rules.requireUppercase || /[A-Z]/.test(password),
+      allowed: config.user.passwordRules.requireUppercase,
     },
     {
       label: "Lowercase letter",
       isValid: !rules.requireLowercase || /[a-z]/.test(password),
+      allowed: config.user.passwordRules.requireLowercase,
     },
     {
       label: "Number",
       isValid: !rules.requireNumber || /[0-9]/.test(password),
+      allowed: config.user.passwordRules.requireNumber,
     },
     {
       label: "Special character",
       isValid: !rules.requireSymbol || /[^a-zA-Z0-9]/.test(password),
+      allowed: config.user.passwordRules.requireSymbol,
     },
   ];
 };
-
 
 type Props = {
   password: string;
@@ -40,23 +44,27 @@ const PasswordStrengthChecks: React.FC<Props> = ({ password }) => {
 
   return (
     <div className="grid grid-cols-3 gap-2">
-      {checks.map((check, index) => (
-        <div key={index} className="flex items-center gap-2">
-          {check.isValid ? (
-            <CheckCircle className="text-green-500 w-3 h-3" />
-          ) : (
-            <XCircle className="text-red-500 w-3 h-3" />
-          )}
-          <span
-            className={clsx("transition-colors text-xs", {
-              "text-green-600": check.isValid,
-              "text-red-500": !check.isValid,
-            })}
-          >
-            {check.label}
-          </span>
-        </div>
-      ))}
+      {checks.map((check, index) => {
+        return (
+          check.allowed && (
+            <div key={index} className="flex items-center gap-2">
+              {check.isValid ? (
+                <CheckCircle className="text-green-500 w-3 h-3" />
+              ) : (
+                <XCircle className="text-red-500 w-3 h-3" />
+              )}
+              <span
+                className={clsx("transition-colors text-xs", {
+                  "text-green-600": check.isValid,
+                  "text-red-500": !check.isValid,
+                })}
+              >
+                {check.label}
+              </span>
+            </div>
+          )
+        );
+      })}
     </div>
   );
 };

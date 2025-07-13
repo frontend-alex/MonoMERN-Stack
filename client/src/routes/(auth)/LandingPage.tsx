@@ -99,7 +99,7 @@ const LandingPage = () => {
           </div>
 
           <footer className="text-sm text-stone-400">
-            <p>Start building with confidence. Welcome to MonoMERN.</p>
+            <p>Start building with confidence. Welcome to {config.app.name}.</p>
           </footer>
         </div>
       </main>
