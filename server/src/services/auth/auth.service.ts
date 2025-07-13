@@ -128,6 +128,9 @@ const sendPasswordEmail = async (email: string) => {
     const user = await UserRepo.findByEmail(email);
     if (!user) throw createError("USER_NOT_FOUND");
 
+    if (user.provider !== AccountProviders.Credentials)
+      throw createError("ACCOUNT_ALREADY_CONNECTED_WITH_PROVIDER");
+
     const token = jwtUtils.generateToken(user.id, user.username);
     const tokenExpiry = new Date(Date.now() + 60 * 60 * 1000); // one hour
 
