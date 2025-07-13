@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
 import { LoaderCircle } from "lucide-react";
@@ -21,20 +20,14 @@ const PasswordStrengthChecks = lazy(
 );
 
 export function RegisterForm({
-  className,
   registerForm,
   handleSubmit,
   providers,
-  isProvidersPending,
   isPending,
-  ...props
 }: RegisterFormProps) {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
-      <div
-        className={cn("flex flex-col gap-4 p-6 md:p-10", className)}
-        {...props}
-      >
+      <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
             <Form {...registerForm}>

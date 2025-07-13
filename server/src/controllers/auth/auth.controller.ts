@@ -3,7 +3,6 @@ import { DecodedUser } from "@/middlewares/auth";
 import { strategies } from "@/constants/authProviders";
 import { NextFunction, Request, Response } from "express";
 import { AuthService } from "@/services/auth/auth.service";
-import { UserService } from "@/services/user/user.service";
 
 const providers = (_req: Request, res: Response, next: NextFunction) => {
   try {
@@ -98,10 +97,9 @@ const updatePassword = async (
   res: Response,
   next: NextFunction
 ) => {
+  const { password, newPassword } = req.body;
 
-  const { password, newPassword } = req.body
-
-  const userId = req.user?.id!
+  const userId = req.user?.id!;
 
   try {
     await AuthService.updatePassword(userId, password, newPassword);
@@ -110,7 +108,6 @@ const updatePassword = async (
       success: true,
       message: "Password successfully changed",
     });
-
   } catch (err) {
     next(err);
   }
@@ -146,6 +143,59 @@ const validateOtp = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const sendPasswordEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { email } = req.body;
+  try {
+    const { token } = await AuthService.sendPasswordEmail(email);
+
+    res.cookie("reset_token", token, {
+      httpOnly: true,
+      secure: env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/",
+    });
+
+    res.status(201).json({
+      success: true,
+      message: `Email was successfully sent to you`,
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+const resetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userId = req.user?.id!;
+  const { newPassword } = req.body;
+  try {
+    await AuthService.resetPassword(userId, newPassword);
+
+    res.clearCookie("reset_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Password Successfully changed",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const logout = async (_req: Request, res: Response, _next: NextFunction) => {
   res.clearCookie("access_token", {
     httpOnly: true,
@@ -167,6 +217,8 @@ export const AuthController = {
   register,
   providers,
   validateOtp,
+  resetPassword,
   updatePassword,
+  sendPasswordEmail,
   handleAuthCallback,
 };

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useApiMutation, useApiQuery } from "@/hooks/hook";
-import { LoginForm } from "@/components/auth/forms/login/login-form-02";
+import { LoginForm } from "@/components/auth/forms/login/login-form-03";
 import type { Providers } from "@/components/auth/forms/buttons/provider-buttons";
 
 import {
@@ -41,7 +41,7 @@ const Login = () => {
     }
   );
 
-  const { data: providersRes, isLoading: isProvidersPending } = useApiQuery<{
+  const { data: providersRes } = useApiQuery<{
     publicProviders: Providers[];
   }>(["providers"], "/auth/providers");
 
@@ -57,7 +57,6 @@ const Login = () => {
         handleSubmit={handleLogin}
         isPending={isPending}
         providers={providersRes?.data?.publicProviders ?? []}
-        isProvidersPending={isProvidersPending}
       />
     </div>
   );

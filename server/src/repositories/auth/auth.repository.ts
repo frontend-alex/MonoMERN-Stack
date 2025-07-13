@@ -44,26 +44,9 @@ const CreateOAuthUser = async (
   }
 };
 
-const createPassword = async (
-  id: string,
-  password: string
-): Promise<IUser | null> => {
-  return UserRepo.safeUpdate({ id }, { password, hasPassword: true });
-};
-
-
-const setResetToken = async (
-  id: string,
-  resetToken: string,
-  resetTokenExpires: Date
-): Promise<IUser | null> => {
-  return UserRepo.safeUpdate({ id }, { resetToken, resetTokenExpires });
-};
 
 
 export const AuthRepo = {
   createUser,
   CreateOAuthUser,
-  createPassword,
-  setResetToken,
 };

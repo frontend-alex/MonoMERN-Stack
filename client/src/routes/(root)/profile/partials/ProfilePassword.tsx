@@ -41,7 +41,7 @@ const ProfilePassword = ({ user }: { user: User }) => {
       onSuccess: (data) => {
         updatePasswordsForm.reset(), toast.success(data.message);
       },
-      onError: (data) => toast.error(data.response?.data.message),
+      onError: (err) => toast.error(err.response?.data.message),
     });
 
   const handleUpdatePassword = async (data: updatePasswordSchemaType) =>

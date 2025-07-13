@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { Loader, LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { OtpFormProps } from "@/types/types";
@@ -18,27 +17,22 @@ import {
 } from "@/components/ui/input-otp";
 
 export function OtpForm({
-  className,
   otpForm,
   isOtpPending,
   isOtpverifying,
   cooldown,
   handleSubmit,
   resendOtp,
-  ...props
 }: OtpFormProps) {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
-      <div
-        className={cn("flex flex-col gap-4 p-6 md:p-10", className)}
-        {...props}
-      >
+      <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
             <Form {...otpForm}>
               <form
                 onSubmit={otpForm.handleSubmit((data) => handleSubmit?.(data))}
-                className={cn("flex flex-col gap-6", className)}
+                className="flex flex-col gap-6"
               >
                 <div className="flex flex-col items-center gap-2 text-center">
                   <h1 className="text-2xl font-bold">Verify your email</h1>
@@ -86,7 +80,7 @@ export function OtpForm({
                   />
 
                   <Button
-                    disabled={isOtpPending}
+                    disabled={isOtpPending || isOtpverifying}
                     type="submit"
                     className="w-full"
                   >
@@ -108,6 +102,7 @@ export function OtpForm({
                   ) : (
                     <button
                       type="button"
+                      disabled={isOtpPending}
                       onClick={resendOtp}
                       className="text-primary underline underline-offset-4 hover:text-primary/80 disabled:text-stone-400 disabled:cursor-none cursor-pointer"
                     >

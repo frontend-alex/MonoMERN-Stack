@@ -1,14 +1,13 @@
 import z from "zod";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
-import { CircleAlert, LoaderCircle } from "lucide-react";
 import { useApiMutation } from "@/hooks/hook";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Separator } from "@/components/ui/separator";
-import { useForm, type UseFormReturn } from "react-hook-form";
+import { type UseFormReturn } from "react-hook-form";
+import { CircleAlert, LoaderCircle } from "lucide-react";
 import { emailSchema, usernameSchema } from "@shared/schemas/user/user.schema";
 import {
   Form,
@@ -17,15 +16,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { makeForm } from "@/lib/utils";
 
-const makeForm = <T extends z.ZodTypeAny>(
-  schema: T,
-  defaultValues: z.infer<T>
-) =>
-  useForm<z.infer<T>>({
-    resolver: zodResolver(schema),
-    defaultValues,
-  });
 
 const ProfileData = () => {
   const { user } = useAuth();
@@ -36,7 +28,7 @@ const ProfileData = () => {
     {
       invalidateQueries: [["auth", "me"]],
       onSuccess: (data) => toast.success(data.message),
-      onError: (data) => toast.error(data.message),
+      onError: (err) => toast.error(err.message),
     }
   );
 

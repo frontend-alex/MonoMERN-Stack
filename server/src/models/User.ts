@@ -13,9 +13,10 @@ interface IUser extends Document {
   emailVerified: boolean;
   imageUrl?: string;
   otp?: string;
-  otpExpiry?: number;
+  tokenExpiry?: number;
   createdAt: Date;
   updatedAt: Date;
+  resetToken?: string;
 
   matchPassword(entered: string): Promise<boolean>;
   isOtpExpired(): boolean;
@@ -50,7 +51,8 @@ const userSchema = new Schema(
       required: false,
     },
     otp: String,
-    otpExpiry: Number,
+    resetToken: String,
+    tokenExpiry: Number,
     emailVerified: {
       type: Boolean,
       default: false,
@@ -84,7 +86,7 @@ userSchema.methods.isResetTokenExpired = function (): boolean {
 };
 
 userSchema.methods.isOtpExpired = function (): boolean {
-  return !!(this.otpExpiry && Date.now() > this.otpExpiry);
+  return !!(this.tokenExpiry && Date.now() > this.tokenExpiry);
 };
 
 const User = mongoose.model<IUser>("User", userSchema);

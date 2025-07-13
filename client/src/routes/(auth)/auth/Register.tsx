@@ -26,7 +26,7 @@ const Register = () => {
 
   const { mutateAsync: sendOtp } = useApiMutation("POST", "/auth/send-otp", {
     onSuccess: (data) => toast.success(data.message),
-    onError: (data) => toast.success(data.message),
+    onError: (err) => toast.success(err.message),
   });
 
   const { mutateAsync: register, isPending } = useApiMutation<
@@ -51,7 +51,7 @@ const Register = () => {
     },
   });
 
-  const { data: providerRes, isLoading: isProvidersPending } = useApiQuery<{
+  const { data: providerRes } = useApiQuery<{
     publicProviders: Providers[];
   }>(["providers"], "/auth/providers");
 
@@ -67,7 +67,6 @@ const Register = () => {
         handleSubmit={handleRegister}
         isPending={isPending}
         providers={providerRes?.data?.publicProviders ?? []}
-        isProvidersPending={isProvidersPending}
       />
     </div>
   );

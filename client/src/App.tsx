@@ -8,11 +8,13 @@ import { Dashboard, Profile, Settings } from "@/routes/(root)";
 import { Route, Routes } from "react-router-dom";
 import {
   AuthCallback,
+  ForgotPassword,
   LandingPage,
   Login,
   Otp,
   Register,
 } from "@/routes/(auth)";
+import ResetPassword from "./routes/(auth)/auth/ResetPassword";
 
 const App = () => {
   return (
@@ -48,6 +50,22 @@ const App = () => {
             element={
               <TitleWrapper title="Register Page">
                 <Register />
+              </TitleWrapper>
+            }
+          />
+           <Route
+            path="/forgot-password"
+            element={
+              <TitleWrapper title="Recover Page">
+                <ForgotPassword />
+              </TitleWrapper>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <TitleWrapper title="Recover Page">
+                <ResetPassword />
               </TitleWrapper>
             }
           />

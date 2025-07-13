@@ -7,7 +7,7 @@ const AuthCallback = () => {
   const navigate = useNavigate();
   const queryClient = new QueryClient();
 
-  const {  mutateAsync: login } = useApiMutation("POST", '/auth/login')
+  const { mutateAsync: login } = useApiMutation("POST", "/auth/login");
 
   useEffect(() => {
     const handleAuth = async () => {
@@ -19,16 +19,14 @@ const AuthCallback = () => {
       }
 
       try {
-          queryClient.invalidateQueries({ queryKey: ['auth', 'me'] });
+        queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
       } catch (error) {
         navigate("/login");
       }
-      
     };
 
     handleAuth();
   }, [login, navigate]);
-
 
   return (
     <div className="flex justify-center items-center h-screen">

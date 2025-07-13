@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { UserDropdownSkeleton } from "@/components/dropdowns/user-dropdown";
 import { ArrowRight, Sparkles, Rocket, Layers } from "lucide-react";
+import { config } from "@shared/config/config";
 
 const LazyUserDropdown = lazy(
   () => import("@/components/dropdowns/user-dropdown")
@@ -47,7 +48,7 @@ const LandingPage = () => {
               MonoMERN Stack
             </h1>
             <p className="text-xl text-stone-400 mb-8 max-w-2xl mx-auto">
-              Full-stack monorepo boilerplate powered by MongoDB, Express,
+              Full-stack {config.app.name} boilerplate powered by MongoDB, Express,
               React, and Node.js — built for speed, scalability, and security.
             </p>
           </div>
@@ -63,7 +64,7 @@ const LandingPage = () => {
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 text-sm">
                   Built with the latest technologies and best practices using a
-                  monorepo structure.
+                  {config.app.name} structure.
                 </p>
               </CardContent>
             </Card>

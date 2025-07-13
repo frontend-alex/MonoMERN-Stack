@@ -1,3 +1,4 @@
+import { config } from "@shared/config/config";
 import { Layers } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -18,7 +19,7 @@ export const AppLogo = () => {
         <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-lg mx-auto bg-accent">
           <Layers className="h-4 w-4 text-primary" />
         </div>
-        <span className="font-semibold">MonoMERN</span>
+        <span className="font-semibold">{config.app.name}</span>
       </div>
     </Link>
   );

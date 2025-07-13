@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { Loader, LoaderCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -20,19 +19,17 @@ import {
 } from "@/components/ui/input-otp";
 
 export function OtpForm({
-  className,
   otpForm,
   cooldown,
   isOtpPending,
   isOtpverifying,
   handleSubmit,
   resendOtp,
-  ...props
 }: OtpFormProps) {
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-3xl">
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
+        <div className="flex flex-col gap-6">
           <Card className="overflow-hidden p-0">
             <CardContent className="grid p-0 md:grid-cols-2">
               <Form {...otpForm}>

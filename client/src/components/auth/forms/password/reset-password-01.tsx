@@ -1,9 +1,9 @@
-import { LoaderCircle } from "lucide-react";
+import { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { LoaderCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import type { LoginFormProps } from "@/types/types";
+import { Button } from "@/components/ui/button";
+import type { ResetPasswordFormProps } from "@/types/types";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
@@ -13,46 +13,49 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { ProviderButtons } from "../buttons/provider-buttons";
 import { config } from "@shared/config/config";
 
-export function LoginForm({
-  loginForm,
-  providers,
+
+const PasswordStrengthChecks = lazy(() => import("@/components/PasswordChecker"))
+
+export function ResetPasswordForm({
+  resetPasswordForm,
   handleSubmit,
   isPending,
-}: LoginFormProps) {
+}: ResetPasswordFormProps) {
   return (
     <div className="flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-3xl">
         <div className="flex flex-col gap-6">
           <Card className="overflow-hidden p-0">
             <CardContent className="grid p-0 md:grid-cols-2">
-              <Form {...loginForm}>
+              <Form {...resetPasswordForm}>
                 <form
-                  onSubmit={loginForm.handleSubmit((data) =>
+                  onSubmit={resetPasswordForm.handleSubmit((data) =>
                     handleSubmit?.(data)
                   )}
                   className="p-6 md:p-8"
                 >
                   <div className="flex flex-col gap-6">
                     <div className="flex flex-col items-center text-center">
-                      <h1 className="text-2xl font-bold">Welcome back</h1>
+                      <h1 className="text-2xl font-bold">
+                        Create your new password
+                      </h1>
                       <p className="text-muted-foreground text-balance">
-                        Login to your {config.app.name} account
+                        Recover to your {config.app.name} account
                       </p>
                     </div>
 
                     <FormField
-                      control={loginForm.control}
-                      name="email"
+                      control={resetPasswordForm.control}
+                      name="newPassword"
                       render={({ field }) => (
                         <FormItem className="grid gap-3">
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel>New Password</FormLabel>
                           <FormControl>
                             <Input
-                              type="email"
-                              placeholder="m@example.com"
+                              type="password"
+                              placeholder="New Password"
                               className="input no-ring"
                               {...field}
                             />
@@ -62,24 +65,24 @@ export function LoginForm({
                       )}
                     />
 
+                    {resetPasswordForm.watch("newPassword") && (
+                      <Suspense fallback={null}>
+                        <PasswordStrengthChecks
+                          password={resetPasswordForm.watch("newPassword")}
+                        />
+                      </Suspense>
+                    )}
+
                     <FormField
-                      control={loginForm.control}
-                      name="password"
+                      control={resetPasswordForm.control}
+                      name="confirmNewPassword"
                       render={({ field }) => (
                         <FormItem className="grid gap-3">
-                          <div className="flex items-center">
-                            <Label htmlFor="password">Password</Label>
-                            <Link
-                              to="/forgot-password"
-                              className="ml-auto text-sm underline-offset-2 hover:underline"
-                            >
-                              Forgot your password?
-                            </Link>
-                          </div>
+                          <FormLabel>Confirm Passowrd</FormLabel>
                           <FormControl>
                             <Input
                               type="password"
-                              placeholder="••••••••"
+                              placeholder="Re Enter Password"
                               className="input no-ring"
                               {...field}
                             />
@@ -97,34 +100,12 @@ export function LoginForm({
                       {isPending ? (
                         <div className="flex items-center gap-3">
                           <LoaderCircle className="animate-spin" />
-                          <p>Logging in...</p>
+                          <p>Continuing...</p>
                         </div>
                       ) : (
-                        "Login"
+                        "Continue"
                       )}
                     </Button>
-
-                    <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-                      <span className="bg-card text-muted-foreground relative z-10 px-2">
-                        Or continue with
-                      </span>
-                    </div>
-
-                    {providers && (
-                      <ProviderButtons
-                        providers={providers}
-                        isPending={isPending}
-                      />
-                    )}
-                    <div className="text-center text-sm">
-                      Don&apos;t have an account?{" "}
-                      <Link
-                        to="/register"
-                        className="underline underline-offset-4"
-                      >
-                        Sign up
-                      </Link>
-                    </div>
                   </div>
                 </form>
               </Form>

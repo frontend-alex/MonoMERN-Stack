@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -16,21 +15,18 @@ import type { LoginFormProps } from "@/types/types";
 import { ProviderButtons } from "../buttons/provider-buttons";
 
 export function LoginForm({
-  className,
   loginForm,
   handleSubmit,
   isPending,
   providers,
-  isProvidersPending,
-  ...props
 }: LoginFormProps) {
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm" {...props}>
+      <div className="w-full max-w-sm">
         <Form {...loginForm}>
           <form
             onSubmit={loginForm.handleSubmit((data) => handleSubmit?.(data))}
-            className={cn("flex flex-col gap-6", className)}
+            className="flex flex-col gap-6"
           >
             <div className="flex flex-col items-center gap-2 text-center">
               <h1 className="text-2xl font-bold">Login to your account</h1>

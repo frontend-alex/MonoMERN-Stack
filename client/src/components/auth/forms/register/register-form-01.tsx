@@ -1,5 +1,4 @@
 import { lazy, Suspense } from "react";
-import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,24 +15,22 @@ import {
 import { LoaderCircle } from "lucide-react";
 import type { RegisterFormProps } from "@/types/types";
 import { ProviderButtons } from "../buttons/provider-buttons";
+import { config } from "@shared/config/config";
 
 const PasswordStrengthChecks = lazy(
   () => import("@/components/PasswordChecker")
 );
 
 export function RegisterForm({
-  className,
   registerForm,
   handleSubmit,
   providers,
-  isProvidersPending,
   isPending,
-  ...props
 }: RegisterFormProps) {
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-3xl">
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
+        <div className="flex flex-col gap-6">
           <Card className="overflow-hidden p-0">
             <CardContent className="grid p-0 md:grid-cols-2">
               <Form {...registerForm}>
@@ -47,7 +44,7 @@ export function RegisterForm({
                     <div className="flex flex-col items-center text-center">
                       <h1 className="text-2xl font-bold">Create an account</h1>
                       <p className="text-muted-foreground text-balance">
-                        Sign up for your MonoRepo account
+                        Sign up for your {config.app.name} account
                       </p>
                     </div>
 

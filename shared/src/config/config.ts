@@ -1,4 +1,7 @@
 export const config = {
+    app: {
+        name: "MonoRepo",
+    },
     user: {
         allowedUpdates: ['username', 'email', 'password', 'emailVerified'],
         passwordRules: {
