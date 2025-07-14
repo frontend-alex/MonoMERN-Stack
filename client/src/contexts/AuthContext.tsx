@@ -38,9 +38,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     "/auth/logout",
     {
       onSuccess: (data) => {
+        toast.success(data.message);
         queryClient.setQueryData(["auth", "me"], null);
         navigate("/", { replace: true });
-        toast.success(data.message);
       },
     }
   );

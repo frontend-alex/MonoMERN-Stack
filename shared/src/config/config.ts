@@ -1,6 +1,6 @@
 export const config = {
     app: {
-        name: "MonoRepo",
+        name: "MonoMERN",
     },
     user: {
         allowedUpdates: ['username', 'email', 'password', 'emailVerified'],

@@ -26,12 +26,6 @@
     "docker:down": "docker-compose down",
     "docker:dev": "docker-compose -f docker-compose.dev.yml up --build",
 
-    "test": "run-p test:shared test:server test:client",
-    "test:shared": "pnpm --filter shared test",
-    "test:server": "pnpm --filter server test",
-    "test:client": "pnpm --filter client test",
-    "test:ci": "pnpm run test:shared && pnpm run test:server && pnpm run test:client",
-    
     "prepare": "husky install"
   },
   "devDependencies": {

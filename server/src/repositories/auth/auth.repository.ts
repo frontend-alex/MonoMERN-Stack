@@ -1,7 +1,6 @@
 import { IUser, User } from "@/models/User";
 import { createError } from "@/middlewares/errors";
-import { AccountProviders } from "@shared/types/enums";
-import { UserRepo } from "@/repositories/user/user.repository";
+import { AccountProviders } from "@shared/types/user";
 
 const createUser = async (
   username: string,

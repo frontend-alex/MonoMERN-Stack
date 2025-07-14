@@ -1,43 +1,17 @@
-import { Link } from "react-router-dom";
-import { lazy, memo, Suspense } from "react";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/AuthContext";
-import { Card, CardContent } from "@/components/ui/card";
-import { UserDropdownSkeleton } from "@/components/dropdowns/user-dropdown";
-import { ArrowRight, Sparkles, Rocket, Layers } from "lucide-react";
-import { config } from "@shared/config/config";
+import Navbar from "@/components/Navbar";
 
-const LazyUserDropdown = lazy(
-  () => import("@/components/dropdowns/user-dropdown")
-);
+import { config } from "@shared/config/config";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight, Sparkles, Rocket, Layers } from "lucide-react";
+
+
 
 const LandingPage = () => {
-  const { isAuthenticated } = useAuth();
 
   return (
     <div className="h-screen relative">
-      <nav className="relative z-10 p-5">
-        <div className="flex justify-end items-center">
-          {isAuthenticated ? (
-            <div>
-              <Suspense fallback={<UserDropdownSkeleton />}>
-                <LazyUserDropdown />
-              </Suspense>
-            </div>
-          ) : (
-            <div className="flex items-center gap-3">
-              <Link to="/login">
-                <Button variant="ghost">Login</Button>
-              </Link>
-              <Link to="/register">
-                <Button>Register</Button>
-              </Link>
-            </div>
-          )}
-          <div className="flex gap-3"></div>
-        </div>
-      </nav>
-
+     <Navbar/>
       <main className="relative z-10 flex flex-col items-center justify-center p-8 overflow-hidden">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-8">
@@ -63,7 +37,7 @@ const LandingPage = () => {
                   Modern Stack
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 text-sm">
-                  Built with the latest technologies and best practices using a
+                  Built with the latest technologies and best practices using a{" "}
                   {config.app.name} structure.
                 </p>
               </CardContent>
@@ -107,4 +81,4 @@ const LandingPage = () => {
   );
 };
 
-export default memo(LandingPage);
+export default LandingPage;

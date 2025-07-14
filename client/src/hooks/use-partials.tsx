@@ -73,7 +73,7 @@ export function useDynamicPartials<T extends Record<string, unknown> = {}>({
           const mod = await loader();
           const Component = mod.default;
           return (
-            <div key={path} className={`${border ? "border-b border-accent" : ""} p-4`}>
+            <div key={path} className="p-4">
               <Component user={user} refetchUser={refetchUser} {...(extraProps as T)} />
             </div>
           );

@@ -12,11 +12,7 @@
     "watch": "concurrently \"tsc --watch\"",
     "start": "node build/index.js",
     "dev": "concurrently \"pnpm run watch\" \"pnpm run copy-templates\" \"nodemon build/index.js\"",
-    "copy-templates": "copyfiles -u 2 src/templates/**/* build/templates",
-    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --forceExit",
-    "test:watch": "cross-env NODE_ENV=test jest --watch",
-    "test:coverage": "cross-env NODE_ENV=test jest --coverage",
-    "test:integration": "cross-env NODE_ENV=test jest --testPathPattern=integration"
+    "copy-templates": "copyfiles -u 2 src/templates/**/* build/templates"
   },
   "keywords": [],
   "author": "",

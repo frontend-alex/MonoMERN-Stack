@@ -12,13 +12,7 @@ import { Button } from "@/components/ui/button";
 import { getUserInitials } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  ChevronsUpDown,
-  Layout,
-  LogOut,
-  Sparkles,
-  User,
-} from "lucide-react";
+import { ChevronsUpDown, Layout, LogOut, Sparkles, User } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const dropdownLinks = [
@@ -65,24 +59,26 @@ export default function UserDropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="no-ring h-12 w-full justify-start gap-3 px-3 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
-        >
-          <Avatar className="h-8 w-8 rounded-lg">
-            {/* <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} /> */}
-            <AvatarFallback className="rounded-lg">
-              {getUserInitials(user.username)}
-            </AvatarFallback>
-          </Avatar>
-          <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-semibold">{user.username}</span>
-            <span className="truncate text-xs text-muted-foreground">
-              {user?.email}
-            </span>
-          </div>
-          <ChevronsUpDown className="ml-auto size-4" />
-        </Button>
+        <div>
+          <Button
+            variant="ghost"
+            className="no-ring h-12 w-full justify-start gap-3 px-3 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
+          >
+            <Avatar className="h-8 w-8 rounded-lg">
+              {/* <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} /> */}
+              <AvatarFallback className="rounded-lg">
+                {getUserInitials(user.username)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <span className="truncate font-semibold">{user.username}</span>
+              <span className="truncate text-xs text-muted-foreground">
+                {user?.email}
+              </span>
+            </div>
+            <ChevronsUpDown className="ml-auto size-4" />
+          </Button>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"

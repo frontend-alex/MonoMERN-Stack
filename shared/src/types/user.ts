@@ -1,4 +1,9 @@
-import { AccountProviders } from "./enums";
+export enum AccountProviders {
+  Credentials = 'Credentials',
+  Google = 'Google',
+  Github = 'Github',
+  Facebook = 'Facebook',
+}
 
 export type User = {
   _id: string;

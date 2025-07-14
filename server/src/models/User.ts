@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 
 import mongoose, { Schema, Document } from "mongoose";
-import { AccountProviders } from "@shared/types/enums";
+import { AccountProviders } from "@shared/types/user";
 
 interface IUser extends Document {
   id:string;

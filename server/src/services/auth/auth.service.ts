@@ -3,12 +3,12 @@ import { env } from "@/config/env";
 import { jwtUtils } from "@/utils/jwt";
 import { EmailUtils } from "@/utils/email";
 import { generateOTP } from "@/utils/utils";
+import { config } from "@shared/config/config";
 import { DecodedUser } from "@/middlewares/auth";
 import { createError } from "@/middlewares/errors";
-import { AccountProviders } from "@shared/types/enums";
+import { AccountProviders } from "@shared/types/user";
 import { UserRepo } from "@/repositories/user/user.repository";
 import { AuthRepo } from "@/repositories/auth/auth.repository";
-import { config } from "@shared/config/config";
 
 const login = async (email: string, password: string) => {
   try {

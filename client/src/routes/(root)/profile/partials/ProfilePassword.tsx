@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import type { User } from "@shared/types/user";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AccountProviders } from "@shared/types/enums";
+import { AccountProviders } from "@shared/types/user";
 import {
   Form,
   FormControl,
