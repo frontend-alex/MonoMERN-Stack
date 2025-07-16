@@ -1,53 +1,42 @@
-name: Test Suite
+name: CI
 
 on:
   push:
-    branches: [master, main, develop]
+    branches: [main, master]
   pull_request:
-    branches: [master, main, develop]
+    branches: [main, master]
 
 jobs:
-  test:
-    name: Run Test Suite
+  build:
     runs-on: ubuntu-latest
-    services:
-      mongodb:
-        image: mongo:7
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd "mongosh --eval 'db.runCommand(\"ping\").ok'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
         with:
-          node-version: '20'
-          cache: 'pnpm'
-      
-      - name: Install PNPM
+          fetch-depth: 0  # Required for Turborepo to detect changes correctly
+
+      - name: Set up pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
-      
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
       - name: Install dependencies
         run: pnpm install
-      
-      - name: Build shared package
-        run: pnpm --filter shared build
-      
-      - name: Run server tests
-        working-directory: ./server
+
+      - name: Turbo build
+        run: pnpm build
+
+      - name: Run tests
         run: pnpm test
+
+      - name: Turbo build with remote caching
+        run: pnpm build
         env:
-          MONGO_URI: mongodb://localhost:27017/test_db
-          NODE_ENV: test
-      
-      - name: Run client tests
-        working-directory: ./client
-        run: pnpm test
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
