@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { protectedAuthRoutes } from "./auth/private.routes";
 import { publicAuthRoutes } from "./auth/public.routes";
+import { protectedAuthRoutes } from "./auth/private.routes";
 
 const router = Router();
 
