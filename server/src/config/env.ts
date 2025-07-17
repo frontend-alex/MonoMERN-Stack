@@ -40,6 +40,7 @@ export const env = cleanEnv(process.env, {
 
   // Database
   DB_LOCAL_URI: str({ default: "" }),
+  DB_ATLAS_URI: str({ default: ""}),
 
   // OTP Email
   OTP_EMAIL: str(),

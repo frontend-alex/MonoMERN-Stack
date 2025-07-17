@@ -9,6 +9,7 @@ const MONGO_OPTIONS = {
   serverSelectionTimeoutMS: 5000,
   socketTimeoutMS: 45000,
   family: 4,
+  isProd: env.isProd ? env.DB_ATLAS_URI : env.DB_LOCAL_URI
 };
 
 export async function connectDB() {
@@ -25,7 +26,7 @@ export async function connectDB() {
       logger.warn("MongoDB disconnected");
     });
 
-    await mongoose.connect(env.DB_LOCAL_URI, MONGO_OPTIONS);
+    await mongoose.connect(MONGO_OPTIONS.isProd, MONGO_OPTIONS);
   } catch (err) {
     logger.error("MongoDB connection failed:", { err });
     process.exit(1);
