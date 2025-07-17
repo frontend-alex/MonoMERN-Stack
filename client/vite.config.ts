@@ -5,12 +5,19 @@ import viteImagemin from "vite-plugin-imagemin";
 import viteCompression from "vite-plugin-compression";
 
 import { defineConfig } from "vite";
+import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    viteCompression(),
+    viteCompression({
+      algorithm: "brotliCompress",
+      ext: ".br",
+      threshold: 1024,
+      deleteOriginFile: false,
+    }),
+    visualizer({ open: true }),
     viteImagemin({
       webp: {
         quality: 80,
@@ -20,8 +27,11 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "@shared": path.resolve(__dirname, "../shared/src"),
+      "@shared": path.resolve(__dirname, "../shared/build"),
     },
+  },
+  build: {
+    sourcemap: true,
   },
   optimizeDeps: {
     include: [
