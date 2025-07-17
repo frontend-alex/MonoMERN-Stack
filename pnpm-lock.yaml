@@ -383,6 +383,9 @@ importers:
       '@types/passport-google-oauth20':
         specifier: ^2.0.16
         version: 2.0.16
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
 
 packages:
 
