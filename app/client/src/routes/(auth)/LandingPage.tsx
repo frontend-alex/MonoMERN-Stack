@@ -5,13 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Sparkles, Rocket, Layers } from "lucide-react";
 
-
-
 const LandingPage = () => {
-
   return (
-    <div className="h-screen relative">
-     <Navbar/>
+    <div>
+      <Navbar />
       <main className="relative z-10 flex flex-col items-center justify-center p-8 overflow-hidden">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-8">
@@ -22,8 +19,9 @@ const LandingPage = () => {
               MonoMERN Stack
             </h1>
             <p className="text-xl text-stone-400 mb-8 max-w-2xl mx-auto">
-              Full-stack {config.app.name} boilerplate powered by MongoDB, Express,
-              React, and Node.js — built for speed, scalability, and security.
+              Full-stack {config.app.name} boilerplate powered by MongoDB,
+              Express, React, and Node.js — built for speed, scalability, and
+              security.
             </p>
           </div>
 
@@ -57,7 +55,7 @@ const LandingPage = () => {
             </Card>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg">
               Get Started
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -71,10 +69,6 @@ const LandingPage = () => {
               View on GitHub
             </Button>
           </div>
-
-          <footer className="text-sm text-stone-400">
-            <p>Start building with confidence. Welcome to {config.app.name}.</p>
-          </footer>
         </div>
       </main>
     </div>

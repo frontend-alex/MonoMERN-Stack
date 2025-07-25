@@ -74,6 +74,7 @@ export const errorHandler = (
 
   logger.error("Failed to handle request", {
     error: err.name,
+    message: err.message
   });
 
   return res.status(statusCode).json({

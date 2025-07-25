@@ -14,8 +14,8 @@ export const config = {
     },
     providers: {
         google: true,
-        github: false,
-        facebook: false,
+        github: true,
+        facebook: true,
         twitter: false,
         linkedin: false,
         instagram: false,
