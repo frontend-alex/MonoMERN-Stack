@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "_moduleAliases": {
-    "@shared": "../shared/build",
+    "@shared": "../../packages/shared/build",
     "@": "build"
   },
   "scripts": {

@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "shared",
-    "server",
-    "client"
+    "app/*",
+    "packages/*"
   ],
   "packageManager": "pnpm@10.10.0",
   "scripts": {

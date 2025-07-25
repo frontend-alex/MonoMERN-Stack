@@ -1,14 +1,14 @@
 {
   "files": [],
   "references": [
-    { "path": "client" },
-    { "path": "server" },
-    { "path": "shared" }
+    { "path": "./app/client" },
+    { "path": "./app/server" },
+    { "path": "./packages/shared" }
   ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["shared/src/*"]
+      "@shared/*": ["packages/shared/src/*"]
     }
   }
 }

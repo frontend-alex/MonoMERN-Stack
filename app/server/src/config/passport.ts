@@ -1,7 +1,7 @@
 import passport from "passport";
 
-import { strategies } from "@/constants/authProviders";
 import { AccountProviders } from "@shared/types/user";
+import { strategies } from "@/constants/authProviders";
 import { UserRepo } from "@/repositories/user/user.repository";
 import { AuthRepo } from "@/repositories/auth/auth.repository";
 
