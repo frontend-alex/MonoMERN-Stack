@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "build/index.js",
   "_moduleAliases": {
     "@shared": "../../packages/shared/build",
     "@": "build"
@@ -20,7 +20,6 @@
   "packageManager": "pnpm@10.9.0",
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "chalk": "^5.4.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.0.1",
@@ -31,7 +30,6 @@
     "helmet": "^8.1.0",
     "hpp": "^0.2.3",
     "jsonwebtoken": "^9.0.2",
-    "logform": "^2.7.0",
     "module-alias": "^2.2.3",
     "mongo-sanitize": "^1.1.0",
     "mongoose": "^8.16.1",
@@ -75,10 +73,12 @@
     "@types/passport-spotify": "^2.0.4",
     "@types/passport-twitter": "^1.0.40",
     "@types/supertest": "^6.0.3",
+    "chalk": "^5.4.1",
     "concurrently": "^9.2.0",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "jest": "^30.0.4",
+    "logform": "^2.7.0",
     "nodemon": "^3.1.10",
     "supertest": "^7.1.3",
     "ts-jest": "^29.4.0",

@@ -49,11 +49,11 @@ Before you begin, ensure you have installed:
    ```
 
 3. **Set up environment variables**:
-   - Create `.env` file in the root directory:
-     ```bash
-     cp .env.example .env
-     ```
-   - Update the values in `.env` as needed
+   ```bash
+   pnpm cp:env
+   ```
+   This copies the existing `.env.example` files to create `.env` files for both client and server.
+   - Update the values in the generated `.env` files as needed
 
 ## Running the Application
 
@@ -153,6 +153,7 @@ mern-stack-boilerplate/
 | `dev` | Starts all services in development mode |
 | `build` | Builds all packages for production |
 | `start` | Starts the production server |
+| `cp:env` | Creates `.env` files for client and server |
 | `lint` | Runs linter on all packages |
 | `test` | Runs tests on all packages |
 | `docker:build` | Builds Docker containers |

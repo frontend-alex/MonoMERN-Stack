@@ -160,6 +160,24 @@ export const OTP_ERRORS = {
     message: "OTP not found.",
     userMessage: "No OTP was found for your request. Please try again.",
   },
+  OTP_SEND_FAILED: {
+    errorCode: "OTP_004",
+    statusCode: 500,
+    message: "Failed to send OTP.",
+    userMessage: "We couldn't send the OTP. Please try again later.",
+  },
+  OTP_ALREADY_USED: {
+    errorCode: "OTP_005",
+    statusCode: 400,
+    message: "OTP has already been used.",
+    userMessage: "This OTP has already been used. Please request a new one.",
+  },
+  OTP_CLEANUP_FAILED: {
+    errorCode: "OTP_006",
+    statusCode: 500,
+    message: "Failed to cleanup expired OTPs.",
+    userMessage: "Failed to cleanup expired OTPs.",
+  },
 };
 
 export const STRIPE_ERRORS = {
