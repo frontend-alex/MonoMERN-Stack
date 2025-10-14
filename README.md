@@ -1,238 +1,245 @@
-# MERN Stack Boilerplate - Complete Guide
+# MonoMERN Stack Boilerplate
 
+A production-ready MERN stack boilerplate with TypeScript, authentication, and modern development tools.
 
-## Table of Contents
-1. [Project Overview](#project-overview)
-2. [Prerequisites](#prerequisites)
-3. [Installation](#installation)
-4. [Running the Application](#running-the-application)
-5. [Project Structure](#project-structure)
-6. [Development Workflow](#development-workflow)
-7. [Available Scripts](#available-scripts)
-8. [Configuration](#configuration)
-9. [Troubleshooting](#troubleshooting)
-10. [License](#license)
+<div align="center">
+  <h3>Frontend Technologies</h3>
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white" alt="React Router" />
+  <img src="https://img.shields.io/badge/TanStack_Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white" alt="TanStack Query" />
+  <img src="https://img.shields.io/badge/React_Hook_Form-EC5990?style=for-the-badge&logo=react-hook-form&logoColor=white" alt="React Hook Form" />
+  <img src="https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=zod&logoColor=white" alt="Zod" />
+</div>
 
-## Project Overview
+<div align="center">
+  <h3>Backend Technologies</h3>
+  <img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Express.js-404D59?style=for-the-badge" alt="Express.js" />
+  <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
+  <img src="https://img.shields.io/badge/Mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white" alt="Mongoose" />
+  <img src="https://img.shields.io/badge/Passport.js-34E27A?style=for-the-badge&logo=passport&logoColor=white" alt="Passport.js" />
+  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white" alt="JWT" />
+  <img src="https://img.shields.io/badge/Bcrypt-00A8CC?style=for-the-badge&logo=bcrypt&logoColor=white" alt="Bcrypt" />
+  <img src="https://img.shields.io/badge/Nodemailer-339933?style=for-the-badge&logo=nodemailer&logoColor=white" alt="Nodemailer" />
+  <img src="https://img.shields.io/badge/Winston-FF6B6B?style=for-the-badge&logo=winston&logoColor=white" alt="Winston" />
+</div>
 
-This is a production-ready MERN (MongoDB, Express, React, Node.js) stack boilerplate with:
+<div align="center">
+  <h3>Development Tools</h3>
+  <img src="https://img.shields.io/badge/PNPM-F69220?style=for-the-badge&logo=pnpm&logoColor=white" alt="PNPM" />
+  <img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white" alt="ESLint" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white" alt="Jest" />
+</div>
 
-- **Frontend**: React 18 with Vite
-- **Backend**: Express.js with MongoDB
-- **Shared Code**: Common TypeScript types and utilities
-- **Modern Tooling**: 
-  - TypeScript across the stack
-  - PNPM for package management
-  - Concurrent execution for development
-  - Docker support
+## Overview
+
+This boilerplate provides a complete foundation for building modern web applications using MongoDB, Express.js, React, and Node.js with TypeScript for type safety and comprehensive authentication.
+
+## Features
+
+- Complete authentication system with JWT and OAuth providers
+- Modern React frontend with TypeScript and Tailwind CSS
+- Express.js backend with RESTful API and comprehensive middleware
+- MongoDB integration with Mongoose ODM
+- Monorepo structure with shared packages
+- Docker support for development and production
+- Security-first approach with proper middleware
+- Email system for notifications and verification
 
 ## Prerequisites
 
-Before you begin, ensure you have installed:
+- Node.js (v18 or higher)
+- PNPM (v8 or higher)
+- MongoDB (v6 or higher)
+- Docker (optional)
 
-- [Node.js](https://nodejs.org/) (v18 or higher)
-- [PNPM](https://pnpm.io/) (v8 or higher)
-- [MongoDB](https://www.mongodb.com/) (running locally or connection string)
-- [Git](https://git-scm.com/)
+## Quick Start
 
-## Installation
+1. Clone the repository
+```bash
+git clone <repository-url>
+cd MonoMERN-Stack
+```
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/mern-stack-boilerplate.git
-   cd mern-stack-boilerplate
-   ```
+2. Install dependencies
+```bash
+pnpm install
+```
 
-2. **Install dependencies**:
-   ```bash
-   pnpm install
-   ```
+3. Set up environment variables
+```bash
+pnpm run cp:env
+```
 
-3. **Set up environment variables**:
-   ```bash
-   pnpm cp:env
-   ```
-   This copies the existing `.env.example` files to create `.env` files for both client and server.
-   - Update the values in the generated `.env` files as needed
+4. Configure environment files
+Edit `.env.development` and `.env.production` with your configuration.
 
-## Running the Application
+5. Start development servers
+```bash
+pnpm run dev
+```
 
-### Development Mode (Recommended)
+Access the application:
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:3000
 
-1. **Start all services in development mode**:
-   ```bash
-   pnpm dev
-   ```
-   This will start:
-   - Shared code watcher
-   - Express server (port 3000)
-   - React frontend (port 5173)
+## Environment Variables
 
-2. **Access the applications**:
-   - Frontend: http://localhost:5173
-   - Backend API: http://localhost:3000
-   - API Health Check: http://localhost:3000/health
+### Required
+- `NODE_ENV` - Environment mode (development/production)
+- `PORT` - Server port (default: 3000)
+- `MONGODB_URI` - MongoDB connection string
+- `JWT_SECRET` - JWT signing secret (min 32 characters)
+- `JWT_REFRESH_SECRET` - JWT refresh token secret
 
-### Production Mode
+### OAuth Providers (Optional)
+- `GOOGLE_CLIENT_ID` - Google OAuth client ID
+- `GOOGLE_CLIENT_SECRET` - Google OAuth client secret
+- `GITHUB_CLIENT_ID` - GitHub OAuth client ID
+- `GITHUB_CLIENT_SECRET` - GitHub OAuth client secret
+- `FACEBOOK_CLIENT_ID` - Facebook OAuth app ID
+- `FACEBOOK_CLIENT_SECRET` - Facebook OAuth app secret
 
-1. **Build all packages**:
-   ```bash
-   pnpm build
-   ```
+### Email Configuration (Optional)
+- `EMAIL_HOST` - SMTP server host
+- `EMAIL_PORT` - SMTP server port
+- `EMAIL_USER` - SMTP username
+- `EMAIL_PASS` - SMTP password
+- `EMAIL_FROM` - From email address
 
-2. **Start the production server**:
-   ```bash
-   pnpm start
-   ```
+## API Endpoints
+
+### Authentication
+- `POST /api/v1/auth/register` - User registration
+- `POST /api/v1/auth/login` - User login
+- `POST /api/v1/auth/logout` - User logout
+- `POST /api/v1/auth/refresh` - Refresh access token
+- `POST /api/v1/auth/forgot-password` - Request password reset
+- `POST /api/v1/auth/reset-password` - Reset password
+- `POST /api/v1/auth/verify-email` - Verify email address
+
+### OAuth Providers
+- `GET /api/v1/auth/google` - Google OAuth login
+- `GET /api/v1/auth/github` - GitHub OAuth login
+- `GET /api/v1/auth/facebook` - Facebook OAuth login
+
+### User Management
+- `GET /api/v1/users/profile` - Get user profile
+- `PUT /api/v1/users/profile` - Update user profile
+- `PUT /api/v1/users/password` - Change password
+- `DELETE /api/v1/users/account` - Delete user account
+
+## Development Commands
+
+### Package Management
+```bash
+pnpm install                    # Install dependencies
+pnpm add <package> --filter <workspace>  # Add dependency to workspace
+```
+
+### Development
+```bash
+pnpm run dev                    # Start all development servers
+pnpm run dev --filter client    # Start client only
+pnpm run dev --filter server    # Start server only
+pnpm run build                  # Build all packages
+pnpm run lint                   # Lint all packages
+pnpm run test                   # Run tests
+```
+
+### Docker
+```bash
+pnpm run docker:dev             # Start development with Docker
+pnpm run docker:dev:down        # Stop development environment
+pnpm run docker:build           # Build Docker images
+pnpm run docker:up              # Start production containers
+pnpm run docker:down            # Stop all containers
+pnpm run docker:logs            # View container logs
+pnpm run docker:cleanup         # Clean up Docker resources
+```
+
+### Production
+```bash
+pnpm run deploy:prod            # Deploy production environment
+pnpm run deploy:dev             # Deploy development environment
+pnpm run start                  # Start production server
+```
+
 
 ## Project Structure
 
 ```
-mern-stack-boilerplate/
-├── client/               # React Vite frontend
-│   ├── public/           # Static assets
-│   ├── src/              # Application source
-│   ├── index.html        # Main HTML file
-│   └── vite.config.ts    # Vite configuration
-├── server/               # Express backend
-│   ├── src/
-│   │   ├── config/       # Environment and DB config
-│   │   ├── controllers/  # Route controllers
-│   │   ├── middlewares/  # Express middlewares
-│   │   ├── models/       # MongoDB models
-│   │   ├── routes/       # API routes
-│   │   ├── utils/        # Utility functions
-│   │   └── index.ts      # Server entry point
-│   └── package.json
-├── shared/               # Shared code between frontend and backend
-│   ├── src/
-│   │   ├── types/        # Shared TypeScript types
-│   │   └── lib/          # Shared utilities
-│   └── package.json
-├── .env.example          # Environment variables template
-├── package.json          # Root package.json
-└── README.md             # This file
+MonoMERN-Stack/
+├── app/
+│   ├── client/          # React frontend
+│   └── server/          # Express.js backend
+├── packages/
+│   └── shared/          # Shared types and utilities
+├── deployment/          # Docker configurations
+├── scripts/             # Development scripts
+└── package.json         # Root package configuration
 ```
 
-## Development Workflow
+## Authentication Flow
 
-### Running Services Individually
+The application uses JWT-based authentication with optional OAuth providers:
 
-1. **Shared code (watch mode)**:
-   ```bash
-   pnpm --filter shared run watch
-   ```
+1. User registers/logs in with credentials
+2. Server validates credentials and generates JWT tokens
+3. Access token (15min) and refresh token (7days) returned to client
+4. Client sends access token with API requests
+5. When access token expires, client uses refresh token to get new access token
 
-2. **Backend server**:
-   ```bash
-   pnpm --filter server run dev
-   ```
+OAuth providers follow standard OAuth 2.0 flow with account linking capabilities.
 
-3. **Frontend client**:
-   ```bash
-   pnpm --filter client run dev
-   ```
+## Database Schema
 
-### Common Development Tasks
+### User Model
+- `_id` - Unique identifier
+- `username` - Unique username
+- `email` - Unique email address
+- `password` - Hashed password
+- `emailVerified` - Email verification status
+- `providers` - OAuth provider IDs
+- `profile` - User profile information
+- `createdAt` - Account creation date
+- `updatedAt` - Last update date
 
-- **Adding new API endpoints**:
-  1. Create a new controller in `server/src/controllers/`
-  2. Add routes in `server/src/routes/`
-  3. Update shared types if needed
-
-- **Adding new React components**:
-  1. Create components in `client/src/components/`
-  2. Add any new types to shared package
-  3. Import from `@shared` when using backend types
-
-## Available Scripts
-
-### Root Scripts
-| Script | Description |
-|--------|-------------|
-| `dev` | Starts all services in development mode |
-| `build` | Builds all packages for production |
-| `start` | Starts the production server |
-| `cp:env` | Creates `.env` files for client and server |
-| `lint` | Runs linter on all packages |
-| `test` | Runs tests on all packages |
-| `docker:build` | Builds Docker containers |
-| `docker:up` | Starts Docker containers |
-| `docker:down` | Stops Docker containers |
-
-### Server Scripts
-| Script | Description |
-|--------|-------------|
-| `dev` | Starts server in development mode |
-| `build` | Compiles TypeScript to JS |
-| `start` | Runs production server |
-| `watch` | Watches for TS file changes |
-
-### Client Scripts
-| Script | Description |
-|--------|-------------|
-| `dev` | Starts Vite development server |
-| `build` | Builds production assets |
-| `preview` | Previews production build |
-
-## Configuration
-
-### Environment Variables
-
-Configure these in your `.env` file:
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `MONGO_URI` | MongoDB connection string | `mongodb://localhost:27017/mern-boilerplate` |
-| `PORT` | Server port | `3000` |
-| `CLIENT_URL` | Frontend URL | `http://localhost:5173` |
-| `NODE_ENV` | Node environment | `development` |
-
-### Customizing the Template
-
-1. **Change the frontend port**:
-   - Update `client/vite.config.ts`:
-     ```ts
-     server: {
-       port: 3001 // Your new port
-     }
-     ```
-
-2. **Add new dependencies**:
-   ```bash
-   pnpm --filter <package> add <dependency>
-   ```
-   Example:
-   ```bash
-   pnpm --filter client add axios
-   ```
+### OTP Model
+- `_id` - Unique identifier
+- `email` - User email
+- `code` - Hashed verification code
+- `type` - OTP type (email_verification/password_reset)
+- `expiresAt` - Expiration timestamp
+- `used` - Usage status
+- `createdAt` - Creation timestamp
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **MongoDB connection errors**:
-   - Ensure MongoDB is running
-   - Verify connection string in `.env`
+**MongoDB Connection Issues**
+- Ensure MongoDB is running: `mongosh --eval "db.adminCommand('ismaster')"`
+- Check MongoDB logs: `sudo journalctl -u mongod`
 
-2. **Port conflicts**:
-   - Check for other services using ports 3000 or 5173
-   - Update ports in `.env` and `vite.config.ts`
+**Port Already in Use**
+- Find process using port: `lsof -i :3000`
+- Kill process: `kill -9 <PID>`
+- Use different port: `PORT=3001 pnpm run dev`
 
-3. **Dependency issues**:
-   - Try deleting `node_modules` and reinstalling:
-     ```bash
-     rm -rf node_modules
-     pnpm install
-     ```
+**Docker Issues**
+- Clean up resources: `docker system prune -a`
+- Rebuild containers: `pnpm run docker:build --no-cache`
+- Check logs: `docker logs <container-name>`
 
-4. **TypeScript errors**:
-   - Ensure shared types are properly imported
-   - Rebuild shared package after changes:
-     ```bash
-     pnpm --filter shared run build
-     ```
+**Environment Variables**
+- Verify .env files exist: `ls -la .env*`
+- Check variables: `node -e "console.log(process.env.NODE_ENV)"`
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
