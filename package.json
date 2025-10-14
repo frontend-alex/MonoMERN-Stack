@@ -14,10 +14,6 @@
     "test": "turbo run test",
     "start": "pnpm --filter server run start",
     "cp:env": "node scripts/setup-env.js",
-    "docker:build": "docker-compose build",
-    "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down",
-    "docker:dev": "docker-compose -f docker-compose.dev.yml up --build",
     "prepare": "husky install"
   },
   "devDependencies": {
