@@ -2,24 +2,25 @@ import bcrypt from "bcrypt";
 import { env } from "@/config/env";
 import { jwtUtils } from "@/utils/jwt";
 import { EmailUtils } from "@/utils/email";
-import { generateOTP } from "@/utils/utils";
 import { config } from "@shared/config/config";
 import { DecodedUser } from "@/middlewares/auth";
 import { createError } from "@/middlewares/errors";
 import { AccountProviders } from "@shared/types/user";
 import { UserRepo } from "@/repositories/user/user.repository";
 import { AuthRepo } from "@/repositories/auth/auth.repository";
+import { sendOtp as sendOtpService, verifyOtp } from "@/services/auth/otp.service";
+import { OtpType } from "@shared/types/otp";
 
 const login = async (email: string, password: string) => {
   try {
     const user = await UserRepo.findByEmail(email);
-    if (!user) throw createError("USER_NOT_FOUND");
+    if (!user) throw createError("INVALID_CREDENTIALS");
 
     if (user.provider != AccountProviders.Credentials)
-      throw createError("ACCOUNT_ALREADY_CONNECTED_WITH_PROVIDER");
+      throw createError("INVALID_CREDENTIALS");
 
     const isMatch = await user.matchPassword(password);
-    if (!isMatch) throw createError("INVALID_CURRENT_PASSWORD");
+    if (!isMatch) throw createError("INVALID_CREDENTIALS");
 
     if (!user.emailVerified) throw createError("EMAIL_NOT_VERIFIED");
 
@@ -58,23 +59,12 @@ const register = async (username: string, email: string, password: string) => {
 
 const sendOtp = async (email: string) => {
   try {
-    const otp = generateOTP();
-    const otpExpiry = Date.now() + env.OTP_EXPIRY;
-
     const user = await UserRepo.findByEmail(email);
 
     if (!user) throw createError("USER_NOT_FOUND");
     if (user.emailVerified) throw createError("EMAIL_ALREADY_VERIFIED");
 
-    await UserRepo.safeUpdate({ email }, { otp, tokenExpiry: otpExpiry });
-
-    const otpEmail = EmailUtils.getEmailTemplate("otp");
-    const html = otpEmail
-      .replace("{{OTP_CODE}}", otp)
-      .replace("{{YEAR}}", new Date().getFullYear().toString())
-      .replace("{{APP_NAME}}", config.app.name);
-
-    await EmailUtils.sendEmail(email, "Your OTP code", html);
+    return await sendOtpService(user.id, email, OtpType.EmailVerification);
   } catch (err) {
     throw err;
   }
@@ -85,17 +75,15 @@ const validateOtp = async (email: string, otp: string) => {
     const user = await UserRepo.findByEmail(email);
     if (!user) throw createError("USER_NOT_FOUND");
 
-    if (!user || !user.otp) throw createError("OTP_NOT_FOUND");
-    if (Date.now() > user.tokenExpiry!) throw createError("OTP_EXPIRED");
-    if (user.otp !== otp) throw createError("INVALID_OTP");
+    // Verify OTP using the new service
+    await verifyOtp(user.id, otp, OtpType.EmailVerification);
 
+    // Mark user as email verified
     await UserRepo.safeUpdate(
       { email },
-      {
-        $set: { emailVerified: true },
-        $unset: { otp: 1, tokenExpiry: 1 },
-      }
+      { emailVerified: true }
     );
+    
   } catch (err) {
     throw err;
   }
@@ -132,6 +120,7 @@ const sendPasswordEmail = async (email: string) => {
       throw createError("ACCOUNT_ALREADY_CONNECTED_WITH_PROVIDER");
 
     const token = jwtUtils.generateToken(user.id, user.username);
+
     const tokenExpiry = new Date(Date.now() + 60 * 60 * 1000); // one hour
 
     await UserRepo.safeUpdate(
@@ -142,6 +131,7 @@ const sendPasswordEmail = async (email: string) => {
     const resetLink = `${env.CORS_ORIGINS}/reset-password`;
 
     const emailTemplate = EmailUtils.getEmailTemplate("reset-password");
+
     const html = emailTemplate
       .replace("{{RESET_LINK}}", resetLink)
       .replace("{{APP_NAME}}", config.app.name)
