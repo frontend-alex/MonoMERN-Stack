@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "build/index.js",
   "_moduleAliases": {
     "@shared": "../../packages/shared/build",
     "@": "build"
