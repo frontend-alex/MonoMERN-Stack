@@ -25,7 +25,7 @@ const login = async (email: string, password: string) => {
     const isMatch = await user.matchPassword(password);
     if (!isMatch) throw createError("INVALID_CREDENTIALS");
 
-    if (!user.emailVerified) throw createError("EMAIL_NOT_VERIFIED");
+    if (!user.emailVerified) throw createError("EMAIL_NOT_VERIFIED", { extra: { otpRedirect: true, email } });
 
     return jwtUtils.generateToken(user.id, user.username);
   } catch (err) {

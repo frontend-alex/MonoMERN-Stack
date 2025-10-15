@@ -1,10 +1,11 @@
 import AppLogo from "./AppLogo";
+
+import { Button } from "./ui/button";
 import { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
-import { UserDropdownSkeleton } from "./dropdowns/user-dropdown";
+import { User, Star } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Button } from "./ui/button";
-import { User } from "lucide-react";
+import { UserDropdownSkeleton } from "./dropdowns/user-dropdown";
 
 const LazyUserDropdown = lazy(
   () => import("@/components/dropdowns/user-dropdown")
@@ -46,6 +47,10 @@ const Navbar = () => {
               <User /> Create an account
             </Button>
           </Link>
+          <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-muted/50 text-sm">
+            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+            <p className="font-medium">0</p>
+          </div>
         </div>
       )}
     </nav>

@@ -22,7 +22,7 @@ const ProfileSettings = () => {
           </p>
           <DeleteDialog
             description="You're about to permanently delete your account. This action cannot be undone."
-            onConfirm={() => deleteUser(null)}
+            onConfirm={() => deleteUser(undefined)}
           >
             <Button variant="destructive" className="mt-5">
               Delete Account

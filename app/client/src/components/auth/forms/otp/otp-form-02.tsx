@@ -106,8 +106,12 @@ export function OtpForm({
                   className="text-primary underline underline-offset-4 hover:text-primary/80 disabled:text-stone-400 disabled:cursor-none cursor-pointer"
                 >
                   {isOtpPending ? (
-                    <div className="flex-row-1">
-                      <Loader size={10} className="text-stone-900 dark:text-stone-200 animate-spin"/> Sending{" "}
+                    <div className="flex items-center gap-2">
+                      <Loader
+                        size={10}
+                        className="text-stone-900 dark:text-stone-200 animate-spin"
+                      />
+                      <p>Sending...</p>
                     </div>
                   ) : (
                     "Send Again"

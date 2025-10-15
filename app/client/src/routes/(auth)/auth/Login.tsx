@@ -36,7 +36,12 @@ const Login = () => {
         toast.success("Login successful");
       },
       onError: (err) => {
-        toast.error(err.response?.data?.message || "Login failed");
+        const error = err.response?.data;
+        if (error?.otpRedirect && error?.email) {
+          navigate(`/verify-email?email=${error.email}`);
+          return;
+        }
+        toast.error(error?.userMessage || error?.message || "Something went wrong");
       },
     }
   );

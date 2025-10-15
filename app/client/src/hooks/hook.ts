@@ -74,7 +74,7 @@ export const useApiMutation = <T, U = unknown, R = ApiSuccessResponse<T>>(
           response = await api.patch<ApiResponse<T>>(resolvedEndpoint, data);
           break;
         case "DELETE":
-          response = await api.delete<ApiResponse<T>>(resolvedEndpoint, { data });
+          response = await api.delete<ApiResponse<T>>(resolvedEndpoint, data ? { data } : undefined);
           break;
         default:
           throw new Error(`Unsupported method: ${method}`);

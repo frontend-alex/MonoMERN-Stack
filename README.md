@@ -83,6 +83,11 @@ Edit `.env.development` and `.env.production` with your configuration.
 pnpm run dev
 ```
 
+**Important:** For OTP functionality to work, email templates must be copied to the build directory. This happens automatically during development, but if you encounter OTP email issues, run:
+```bash
+pnpm run copy-templates --filter server
+```
+
 Access the application:
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:3000
@@ -105,11 +110,10 @@ Access the application:
 - `FACEBOOK_CLIENT_SECRET` - Facebook OAuth app secret
 
 ### Email Configuration (Optional)
-- `EMAIL_HOST` - SMTP server host
-- `EMAIL_PORT` - SMTP server port
-- `EMAIL_USER` - SMTP username
-- `EMAIL_PASS` - SMTP password
-- `EMAIL_FROM` - From email address
+- `OTP_EMAIL_SERVICE` - Email service provider (e.g., 'gmail', 'outlook')
+- `OTP_EMAIL` - Email address for sending OTP emails
+- `OTP_EMAIL_PASSWORD` - Email password or app-specific password
+- `CORS_ORIGINS` - Frontend URL for password reset links
 
 ## API Endpoints
 
@@ -149,6 +153,19 @@ pnpm run dev --filter server    # Start server only
 pnpm run build                  # Build all packages
 pnpm run lint                   # Lint all packages
 pnpm run test                   # Run tests
+```
+
+### Email Templates
+```bash
+# Copy email templates to build directory (required for OTP functionality)
+pnpm run copy-templates --filter server
+
+# Email templates are located at:
+# app/server/src/infrastructure/email/templates/
+# ├── auth/
+# │   ├── otp.html
+# │   └── reset-password.html
+# └── notifications/
 ```
 
 ### Docker
@@ -239,6 +256,13 @@ OAuth providers follow standard OAuth 2.0 flow with account linking capabilities
 **Environment Variables**
 - Verify .env files exist: `ls -la .env*`
 - Check variables: `node -e "console.log(process.env.NODE_ENV)"`
+
+**Email Template Issues**
+- OTP emails not sending: Ensure templates are copied to build directory
+- Run: `pnpm run copy-templates --filter server`
+- Check template path: `app/server/build/infrastructure/email/templates/`
+- Verify template files exist in both src and build directories
+- For production: Templates are automatically copied during build process
 
 ## License
 

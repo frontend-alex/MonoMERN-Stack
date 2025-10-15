@@ -23,7 +23,7 @@ export const ProviderButtons: React.FC<ProviderButtonsProps> = ({ providers, isP
           variant="outline"
           disabled={isPending}
           className="flex-1 items-center justify-center gap-2 cursor-pointer"
-          onClick={() => window.open(`${API_URL}auth/${name}`, '_blank', 'noopener,noreferrer')}
+          onClick={() => window.open(`${API_URL}/auth/${name}`, '_blank', 'noopener,noreferrer')}
         >
           <img loading="lazy" className="w-4 h-4" src={`/images/providers/${name}.webp`}/>
           {showText && <span>{`${label}`}</span>}

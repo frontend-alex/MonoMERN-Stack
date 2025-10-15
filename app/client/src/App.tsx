@@ -15,10 +15,12 @@ import {
   Register,
 } from "@/routes/(auth)";
 import ResetPassword from "./routes/(auth)/auth/ResetPassword";
+import { DotBackground } from "./components/ui/backgrounds/dot-background";
 
 const App = () => {
   return (
     <Suspense fallback={<Loading />}>
+      <DotBackground className="absolute top-0 h-[50dvh] -z-1" />
       <Routes>
         <Route
           path="/"
@@ -36,6 +38,7 @@ const App = () => {
             </TitleWrapper>
           }
         />
+
         <Route element={<AuthLayout />}>
           <Route
             path="/login"
@@ -53,7 +56,7 @@ const App = () => {
               </TitleWrapper>
             }
           />
-           <Route
+          <Route
             path="/forgot-password"
             element={
               <TitleWrapper title="Recover Page">
@@ -95,7 +98,7 @@ const App = () => {
               </TitleWrapper>
             }
           />
-           <Route
+          <Route
             path="/settings"
             element={
               <TitleWrapper title="Settings Page">
