@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Build shared package first
+        run: pnpm --filter shared build
+
       - name: Turbo build
         run: pnpm build
 
