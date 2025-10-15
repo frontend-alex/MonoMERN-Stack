@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
-import nodemailer from "nodemailer";
-import { createError } from "@/middlewares/errors";
 import { env } from "@/config/env";
+import nodemailer from "nodemailer";
+import { createError } from "@/core/error/errors";
 
 const transporter = nodemailer.createTransport({
   service: env.OTP_EMAIL_SERVICE,

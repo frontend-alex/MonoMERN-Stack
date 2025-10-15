@@ -1,5 +1,5 @@
-import { UserRepo } from "@/repositories/user/user.repository";
-import { UserService } from "@/services/user/user.service";
+import { UserRepo } from "@/core/repositories/user/user.repository";
+import { UserService } from "@/core/services/user/user.service";
 import { NextFunction, Request, Response } from "express";
 
 const getUser = async (req: Request, res: Response, next: NextFunction) => {

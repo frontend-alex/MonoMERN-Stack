@@ -1,20 +1,20 @@
+import { env } from "@/config/env";
 import jwt, { Secret } from "jsonwebtoken";
 import { JwtPayload } from "jsonwebtoken";
-import { createError } from "./errors";
+import { createError } from "@/core/error/errors";
 import { NextFunction, RequestHandler, Request, Response } from "express";
-import { env } from "@/config/env";
 
 export interface DecodedUser extends JwtPayload {
   id: string;
   username: string;
 }
 
-export const jwtMiddleware: RequestHandler = (
+export const resetTokenMiddleware: RequestHandler = (
   req: Request,
   _res: Response,
   next: NextFunction
 ) => {
-    const token = req.cookies?.access_token
+  const token = req.cookies?.reset_token;
 
   if (!token) {
     return next(createError("INVALID_TOKEN"));

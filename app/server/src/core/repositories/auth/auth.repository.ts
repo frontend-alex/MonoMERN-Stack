@@ -1,5 +1,4 @@
-import { IUser, User } from "@/models/User";
-import { createError } from "@/middlewares/errors";
+import { IUser, User } from "@/core/models/User";
 import { AccountProviders } from "@shared/types/user";
 
 const createUser = async (
@@ -7,18 +6,14 @@ const createUser = async (
   email: string,
   password: string
 ): Promise<IUser> => {
-  try {
-    const user = new User({
-      email,
-      username,
-      password,
-    });
+  const user = new User({
+    email,
+    username,
+    password,
+  });
 
-    await user.save();
-    return user;
-  } catch (err) {
-    throw createError("REGISTRATION_FAILED");
-  }
+  await user.save();
+  return user;
 };
 
 const CreateOAuthUser = async (
@@ -26,7 +21,6 @@ const CreateOAuthUser = async (
   email: string,
   provider: AccountProviders
 ): Promise<IUser> => {
-  try {
     const user = new User({
       email,
       username,
@@ -38,12 +32,7 @@ const CreateOAuthUser = async (
 
     await user.save();
     return user;
-  } catch (err) {
-    throw createError("DATABASE_ERROR");
-  }
 };
-
-
 
 export const AuthRepo = {
   createUser,

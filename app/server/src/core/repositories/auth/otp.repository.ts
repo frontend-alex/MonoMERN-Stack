@@ -1,6 +1,6 @@
-import { Otp } from "@/models/Otp";
+import { Otp } from "@/core/models/Otp";
 import { OtpType } from "@shared/types/otp";
-import { generateOTP } from "@/utils/utils";
+import { generateOTP } from "@/shared/utils/utils";
 
 export const createOtp = async (userId: string, type: OtpType, expiresInMinutes: number = 5) => {
   const code = generateOTP();

@@ -1,15 +1,18 @@
 import bcrypt from "bcrypt";
 import { env } from "@/config/env";
-import { jwtUtils } from "@/utils/jwt";
-import { EmailUtils } from "@/utils/email";
+import { jwtUtils } from "@/shared/utils/jwt";
+import { EmailUtils } from "@/shared/utils/email";
 import { config } from "@shared/config/config";
-import { DecodedUser } from "@/middlewares/auth";
-import { createError } from "@/middlewares/errors";
 import { AccountProviders } from "@shared/types/user";
-import { UserRepo } from "@/repositories/user/user.repository";
-import { AuthRepo } from "@/repositories/auth/auth.repository";
-import { sendOtp as sendOtpService, verifyOtp } from "@/services/auth/otp.service";
+import { UserRepo } from "@/core/repositories/user/user.repository";
+import { AuthRepo } from "@/core/repositories/auth/auth.repository";
+import {
+  sendOtp as sendOtpService,
+  verifyOtp,
+} from "@/core/services/auth/otp.service";
 import { OtpType } from "@shared/types/otp";
+import { createError } from "@/core/error/errors";
+import { DecodedUser } from "@/api/middlewares/auth";
 
 const login = async (email: string, password: string) => {
   try {
@@ -79,11 +82,7 @@ const validateOtp = async (email: string, otp: string) => {
     await verifyOtp(user.id, otp, OtpType.EmailVerification);
 
     // Mark user as email verified
-    await UserRepo.safeUpdate(
-      { email },
-      { emailVerified: true }
-    );
-    
+    await UserRepo.safeUpdate({ email }, { emailVerified: true });
   } catch (err) {
     throw err;
   }

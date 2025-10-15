@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { ERROR_MESSAGES } from "../constants/errorMessages";
-import { logger } from "../utils/logger";
+
+import { logger } from "@/shared/utils/logger";
+import { ERROR_MESSAGES } from "@/shared/constants/errorMessages";
 
 interface AppErrorParams {
   message: string;

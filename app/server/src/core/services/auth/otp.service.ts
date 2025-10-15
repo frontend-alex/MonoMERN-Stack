@@ -1,13 +1,14 @@
+import { OtpType } from "@shared/types/otp";
+import { config } from "@shared/config/config";
 import { 
   createOtp, 
   findByCodeAndType, 
   markAsUsed, 
   invalidateUserOtps, 
-} from "@/repositories/auth/otp.repository";
-import { EmailUtils } from "@/utils/email";
-import { config } from "@shared/config/config";
-import { createError } from "@/middlewares/errors";
-import { OtpType } from "@shared/types/otp";
+} from "@/core/repositories/auth/otp.repository";
+import { createError } from "@/core/error/errors";
+import { EmailUtils } from "@/shared/utils/email";
+
 
 export const sendOtp = async (userId: string, email: string, type: OtpType = OtpType.EmailVerification) => {
   try {

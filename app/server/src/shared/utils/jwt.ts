@@ -1,7 +1,7 @@
 import { env } from "@/config/env";
-import { DecodedUser } from "@/middlewares/auth";
-import { createError } from "@/middlewares/errors";
 import jwt, { Secret } from "jsonwebtoken";
+import { createError } from "@/core/error/errors";
+import { DecodedUser } from "@/api/middlewares/auth";
 
 
 function generateToken(

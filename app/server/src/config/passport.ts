@@ -1,9 +1,9 @@
 import passport from "passport";
 
 import { AccountProviders } from "@shared/types/user";
-import { strategies } from "@/constants/authProviders";
-import { UserRepo } from "@/repositories/user/user.repository";
-import { AuthRepo } from "@/repositories/auth/auth.repository";
+import { strategies } from "@/shared/constants/authProviders";
+import { UserRepo } from "@/core/repositories/user/user.repository";
+import { AuthRepo } from "@/core/repositories/auth/auth.repository";
 
 strategies.forEach(({ Strategy, config, label }) => {
   passport.use(

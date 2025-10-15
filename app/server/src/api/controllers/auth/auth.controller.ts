@@ -1,8 +1,8 @@
 import { env } from "@/config/env";
-import { DecodedUser } from "@/middlewares/auth";
-import { strategies } from "@/constants/authProviders";
+import { DecodedUser } from "@/api/middlewares/auth";
 import { NextFunction, Request, Response } from "express";
-import { AuthService } from "@/services/auth/auth.service";
+import { strategies } from "@/shared/constants/authProviders";
+import { AuthService } from "@/core/services/auth/auth.service";
 
 const providers = (_req: Request, res: Response, next: NextFunction) => {
   try {

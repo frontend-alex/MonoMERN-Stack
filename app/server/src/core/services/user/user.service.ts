@@ -1,5 +1,5 @@
-import { createError } from "@/middlewares/errors";
-import { UserRepo } from "@/repositories/user/user.repository";
+import { createError } from "@/core/error/errors";
+import { UserRepo } from "@/core/repositories/user/user.repository";
 
 const updateUser = async (
   userId: string,
@@ -20,7 +20,9 @@ const deleteUser = async (userId: string) => {
   try {
     if (!userId) throw createError("USER_NOT_FOUND");
 
-    await UserRepo.deleteUser(userId);
+    const result = await UserRepo.deleteUser(userId);
+    if (!result) throw createError("USER_NOT_FOUND");
+    
   } catch (err) {
     throw err;
   }
