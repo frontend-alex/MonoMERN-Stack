@@ -83,7 +83,7 @@ Edit `.env.development` and `.env.production` with your configuration.
 pnpm run dev
 ```
 
-**Important:** For OTP functionality to work, email templates must be copied to the build directory. This happens automatically during development, but if you encounter OTP email issues, run:
+**Important:** For OTP functionality to work, email templates must be copied to the build directory. This happens automatically during development, but if you encounter OTP email issues, run inside the app/server:
 ```bash
 pnpm run copy-templates --filter server
 ```
