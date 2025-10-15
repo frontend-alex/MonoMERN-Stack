@@ -50,6 +50,43 @@ This boilerplate provides a complete foundation for building modern web applicat
 - Security-first approach with proper middleware
 - Email system for notifications and verification
 
+## Future Database Support
+
+**Coming Soon:** Multi-database support to give developers flexibility in choosing their preferred database solution.
+
+### Planned Database Support
+- **PostgreSQL** - Full relational database support with Prisma ORM
+- **MySQL** - Alternative relational database option
+- **MongoDB** - Current NoSQL database (already supported)
+- **SQLite** - Lightweight option for development and small applications
+
+### Benefits
+- **Database Agnostic** - Choose the database that best fits your project requirements
+- **Easy Migration** - Switch between databases with minimal code changes
+- **Flexible Architecture** - Support both relational and non-relational data models
+- **Production Ready** - Each database option will include optimized configurations and best practices
+
+This enhancement will maintain backward compatibility while providing developers with the freedom to use PostgreSQL for complex relational data, MySQL for traditional web applications, or continue using MongoDB for document-based architectures.
+
+## Showcase: Easy Template Customization
+
+**See it in action!** Watch how simple it is to customize authentication templates and toggle between different OTP configurations.
+
+### Video Demo
+<video width="100%" controls autoplay muted loop>
+  <source src="docs/assets/toggle-design.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+### Template Customization Features
+- **One-Click Switching** - Change between register, login, and OTP templates instantly
+- **Number-Based Configuration** - Simply modify the template number to switch functionality
+- **Real-Time Preview** - See changes immediately without server restarts
+- **Consistent Styling** - All templates maintain your brand's visual identity
+- **Mobile Responsive** - Templates automatically adapt to different screen sizes
+
+*Watch the video above to see this powerful feature in action!*
+
 ## Prerequisites
 
 - Node.js (v18 or higher)
