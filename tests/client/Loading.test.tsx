@@ -26,8 +26,8 @@ describe('Loading Component', () => {
   it('renders as a link to home page', () => {
     renderWithRouter(<Loading />)
     
-    // Check if it's a link to "/"
-    const link = screen.getByRole('link')
-    expect(link).toHaveAttribute('href', '/')
+    // Check if it's a link to "/" - get the first link
+    const links = screen.getAllByRole('link')
+    expect(links[0]).toHaveAttribute('href', '/')
   })
 })
