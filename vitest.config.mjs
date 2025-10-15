@@ -13,22 +13,10 @@ export default defineConfig({
     },
   },
   test: {
-    environment: 'jsdom',
+    environment: 'happy-dom',
     globals: true,
     setupFiles: ['./tests/setup.ts'],
     include: ['tests/**/*.{test,spec}.{js,ts,tsx}'],
     exclude: ['node_modules', 'dist', 'build'],
-    environmentOptions: {
-      jsdom: {
-        resources: 'usable',
-        url: 'http://localhost:3000'
-      }
-    },
-    pool: 'threads',
-    poolOptions: {
-      threads: {
-        singleThread: true
-      }
-    }
   },
 })
