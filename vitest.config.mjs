@@ -20,13 +20,14 @@ export default defineConfig({
     exclude: ['node_modules', 'dist', 'build'],
     environmentOptions: {
       jsdom: {
-        resources: 'usable'
+        resources: 'usable',
+        url: 'http://localhost:3000'
       }
     },
-    pool: 'forks',
+    pool: 'threads',
     poolOptions: {
-      forks: {
-        singleFork: true
+      threads: {
+        singleThread: true
       }
     }
   },
