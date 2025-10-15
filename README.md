@@ -70,22 +70,12 @@ This enhancement will maintain backward compatibility while providing developers
 
 ## Showcase: Easy Template Customization
 
-**See it in action!** Watch how simple it is to customize authentication templates and toggle between different OTP configurations.
-
-### Video Demo
-<video width="100%" controls autoplay muted loop>
-  <source src="docs/assets/toggle-design.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
 ### Template Customization Features
 - **One-Click Switching** - Change between register, login, and OTP templates instantly
 - **Number-Based Configuration** - Simply modify the template number to switch functionality
 - **Real-Time Preview** - See changes immediately without server restarts
 - **Consistent Styling** - All templates maintain your brand's visual identity
 - **Mobile Responsive** - Templates automatically adapt to different screen sizes
-
-*Watch the video above to see this powerful feature in action!*
 
 ## Prerequisites
 
